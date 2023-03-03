@@ -1,6 +1,6 @@
 
 public class Hotel {
-    Room[] rooms = new Room[30]; // odaların tutulduğu Room classı türübde array
+    Room[] rooms = new Room[30]; // odaların tutulduğu Room classı türünde array
     Employee[] employees = new Employee[50]; // işçilerin tutulduğu employee türünde array
     int roomIndex = 0;
     int employeeIndex = 0;
