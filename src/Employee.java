@@ -16,14 +16,14 @@ public Employee(String name, String surname ,String gender,
                 String birthdate, String adress, String district ,
                 String city,String phone, String job, int salary) {
 
-    this.employeeName = name;
-    this.employeSurname = surname;
-    this.employeeGender = gender;
-    this.employeeBirthdate = birthdate;
-    this.employeeAdress = adress;
+    employeeName = name;
+    employeSurname = surname;
+    employeeGender = gender;
+    employeeBirthdate = birthdate;
+    employeeAdress = adress;
     this.district = district;
     this.city = city;
-    this.employeePhone = phone;
+    employeePhone = phone;
     this.job = job;
     this.salary = salary;
 

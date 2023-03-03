@@ -27,8 +27,7 @@ public class Main {
                         DEUCengHotel.addRoom(room); // otele bu odayı ekle
                         // komutu öğrenmek için listenin ilk elemanını kontrol et
                     }
-                }
-                else if (commandList[0].equals(("addEmployee"))) {
+                } else if (commandList[0].equals(("addEmployee"))) {
                     String name = commandList[1];
                     String surname = commandList[2];
                     String gender = commandList[3];
@@ -43,8 +42,7 @@ public class Main {
                     Employee employee = new Employee(name, surname, gender, birthdate, addresstext, district, city, phone, job
                             , salary);
                     DEUCengHotel.addEmployee(employee);
-                }
-                else if (commandList[0].equals(("addCustomer"))) {
+                } else if (commandList[0].equals(("addCustomer"))) {
                     String name = commandList[1];
                     String surname = commandList[2];
                     String gender = commandList[3];
@@ -57,28 +55,32 @@ public class Main {
                     Customer customer = new Customer(name, surname, gender, birthdate, addresstext, district, city, phone);
                     DEUCengHotel.addCustomer(customer);
 
-                }
-                else if (commandList[0].equals("listRooms")) {
+                } else if (commandList[0].equals("listRooms")) {
                     DEUCengHotel.listRoom();
-                }
-                else if (commandList[0].equals(("listEmployees"))) {
+                } else if (commandList[0].equals(("listEmployees"))) {
                     DEUCengHotel.listEmployee();
-                }
-                else if (commandList[0].equals(("listCustomers"))) {
+                } else if (commandList[0].equals(("listCustomers"))) {
                     DEUCengHotel.listCustomer();
-                }
-                else if (commandList[0].equals("addReservation")){
+                } else if (commandList[0].equals("addReservation")) {
                     int customerid = Integer.parseInt(commandList[1]);
                     int roomid = Integer.parseInt(commandList[2]);
+                    Room targetRoom = DEUCengHotel.findRoomById(roomid);
+
                     String startdate = commandList[3];
                     String enddate = commandList[4];
-                    Reservation rezervation = new Reservation(customerid,roomid,startdate,enddate);
+
+                    Reservation rezervation = new Reservation(customerid, roomid, startdate, enddate);
+                    DEUCengHotel.addRezervation(targetRoom, rezervation);
+                }
+                else if (commandList[0].equals("listReservations")) {
+                    DEUCengHotel.listRezervation();
+
+
                 }
 
             }
             reader.close();
-        }
-        catch (
+        } catch (
                 FileNotFoundException e) {
             System.out.println("command txt cannot be found");
 
