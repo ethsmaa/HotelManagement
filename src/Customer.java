@@ -20,6 +20,7 @@ public class Customer {
         this.district = district;
         this.city = city;
         this.customerPhone = phone;
+
     }
 
 

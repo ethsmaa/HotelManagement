@@ -18,10 +18,12 @@ public class Hotel {
     }
 
     void listRoom() {
-
+        System.out.println(rooms[0]);
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i] != null) {
-                System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId, rooms[i].roomType, rooms[i].airCondition, rooms[i].balcony, rooms[i].price));
+                String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
+                String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
+                System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId, rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
             } else
                 break;
         }
@@ -68,6 +70,10 @@ public class Hotel {
 
 
         }
+    }
+
+    void AddRezervation() {
+
     }
 
 
