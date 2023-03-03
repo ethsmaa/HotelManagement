@@ -60,7 +60,6 @@ public class Main {
             reader.close();
         } catch (FileNotFoundException e) {
             System.out.println("command txt cannot be found");
-            e.printStackTrace();
 
         }
     }
