@@ -29,10 +29,10 @@ public class Main {
                         DEUCengHotel.addRoom(room); // otele bu odayı ekle
                     }
 
-                } else if (commandList[0].equals("listRooms")) {
+                }
+                else if (commandList[0].equals("listRooms")) {
                     DEUCengHotel.listRoom();
                 }
-
                 else if (commandList[0].equals(("addEmployee"))) {
                     String name = commandList[1];
                     String surname = commandList[2];
@@ -49,12 +49,28 @@ public class Main {
                     ,salary);
                     DEUCengHotel.addEmployee(employee);
                 }
-
                 else if (commandList[0].equals(("listEmployees"))) {
                     DEUCengHotel.listEmployee();
 
                 }
+                else if(commandList[0].equals(("addCustomer"))){
+                    String name = commandList[1];
+                    String surname = commandList[2];
+                    String gender = commandList[3];
+                    String birthdate = commandList[4];
+                    String addresstext = commandList[5];
+                    String district = commandList[6];
+                    String city = commandList[7];
+                    String phone = commandList[8];
 
+                    Customer customer = new Customer(name,surname,gender,birthdate,addresstext,district,city,phone);
+                    DEUCengHotel.addCustomer(customer);
+
+                }
+                else if (commandList[0].equals(("listCustomers"))) {
+                    DEUCengHotel.listCustomer();
+
+                }
 
                 }
             reader.close();
