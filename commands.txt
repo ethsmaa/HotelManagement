@@ -30,6 +30,14 @@ listCustomers
 addReservation;4;4;10.4.2024;10.9.2024
 listReservations
 
+addReservation;4;4;10.4.2024;10.9.2024
+addReservation;4;4;10.4.2024;10.9.2024
+
+
+searchCustomer;Ze*
+statistics
+
+
 
 
 

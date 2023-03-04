@@ -16,7 +16,7 @@ public class Hotel {
 
         room.roomId = roomIndex + 1;
         rooms[roomIndex] = room;
-         roomIndex++;
+        roomIndex++;
 
     }
 
@@ -37,8 +37,18 @@ public class Hotel {
         if (employeeIndex < 50) {
             employee.employeeid = employeeIndex + 1;
             employees[employeeIndex] = employee;
-             employeeIndex++;
+            employeeIndex++;
 
+        }
+    }
+
+    void deleteEmployee(int id) {
+        for (int i = 0; i < employees.length; i++) {
+            if (id == employees[i].employeeid) {
+                employees[i] = null;
+                break;
+
+            }
         }
     }
 
@@ -52,24 +62,27 @@ public class Hotel {
     }
 
     // customer
-
     void addCustomer(Customer customer) {
         customer.customerid = customerIndex + 1;
         customers[customerIndex] = customer;
-         customerIndex++;
+        customerIndex++;
     }
 
     void listCustomer() {
-
+        System.out.println("listCustomer");
         for (int i = 0; i < customers.length; i++) {
             if (customers[i] != null) {
-                System.out.println(String.format("Customer  #%d  %s  %s  %s  %s  %s", customers[i].customerid, customers[i].customerName, customers[i].customerSurname, customers[i].customerGender, customers[i].customerBirthdate, customers[i].customerPhone));
+                System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s",
+                        customers[i].customerid, customers[i].customerName,
+                        customers[i].customerSurname, customers[i].customerGender,
+                        customers[i].customerBirthdate, customers[i].customerPhone));
             }
 
 
         }
     }
 
+    // rezervation
     void addRezervation(Room room, Reservation reservation) {
         /*
         boolean hasRezerved = false;
@@ -84,16 +97,16 @@ public class Hotel {
 
         rezervations[rezervationIndex] = reservation;
         rezervationIndex++;
-        if(room!=null)
+        if (room != null)
             room.rezervationCount++;
     }
 
     void listRezervation() {
         for (int i = 0; i < rezervations.length; i++) {
             if (rezervations[i] != null) {
-            int targetCustomerIndex = findCustomerIndexById(rezervations[i].customerid);
+                int targetCustomerIndex = findCustomerIndexById(rezervations[i].customerid);
                 System.out.println(String.format("Room  #%d  %s %s  %s   %s", rezervations[i].roomid, customers[targetCustomerIndex].customerName,
-                        customers[targetCustomerIndex].customerSurname , rezervations[i].startDate, rezervations[i].endDate));
+                        customers[targetCustomerIndex].customerSurname, rezervations[i].startDate, rezervations[i].endDate));
             }
 
 
@@ -102,11 +115,12 @@ public class Hotel {
 
     }
 
+    // search functions
     Room findRoomById(int id) {
         for (int i = 0; i < rooms.length; i++) {
-            if(rezervations[i] != null){
+            if (rezervations[i] != null) {
                 if (rooms[i].roomId == id)
-                return rooms[i];
+                    return rooms[i];
             }
         }
         return null;
@@ -119,4 +133,67 @@ public class Hotel {
         }
         return 0;
     }
+
+    void findCustomerbyName(String name) {
+        for (int i = 0; i < customers.length; i++) {
+            if (name.contains("*")) {  // yıldızlı işlemler
+                int targetIndex = name.indexOf('*');
+                if (customers[i] != null) {
+                    if (customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
+                        System.out.println(String.format("Customer  #%d  %s  %s  %s  %s  %s",
+                                customers[i].customerid, customers[i].customerName, customers[i].customerSurname,
+                                customers[i].customerGender, customers[i].customerBirthdate, customers[i].customerPhone));
+                    }
+
+                }
+            } else if (name.contains("?")) {
+                if (customers[i] != null) {
+                    if (customers[i].customerName.length() == name.length()) {
+                        int targetIndex = name.indexOf('?');
+                        //
+                        if (customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
+                            System.out.println(String.format("Customer  #%d  %s  %s  %s  %s  %s",
+                                    customers[i].customerid, customers[i].customerName, customers[i].customerSurname,
+                                    customers[i].customerGender, customers[i].customerBirthdate, customers[i].customerPhone));
+                        }
+                    }
+
+                }
+
+
+            }
+
+        }
+        return;
+    }
+
+    void findRoombyDate(String startDate, String endDate) {
+        for (int i = 0; i < rooms.length; i++) {
+            if (startDate.equals(rooms[i])) {
+
+            }
+        }
+
+    }
+
+    void findMostRezervedRoom() {
+        int maxReserve = rooms[0].rezervationCount;
+
+        for (int i = 0; i < rooms.length; i++) { // rezerveler içinde en çok rezervasyon yapilmis odayı bul
+            if (rooms[i] != null) {
+                if (rooms[i].rezervationCount > maxReserve)
+                    maxReserve = rooms[i].rezervationCount;
+            }
+        }
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i] != null) {
+                if (maxReserve == rooms[i].rezervationCount) {
+                    System.out.println(String.format("The most reserved room = Room #%d", rooms[i].roomId));
+                }
+
+            }
+        }
+    }
+
+
 }

@@ -8,7 +8,6 @@ public class Main {
         try { // error olmadığı sürece
             File commandFile = new File("commands.txt"); // dosyayı aç
             Scanner reader = new Scanner(commandFile);
-
             Hotel DEUCengHotel = new Hotel(); // otel class'ı içinde obje oluştur
 
 
@@ -27,7 +26,8 @@ public class Main {
                         DEUCengHotel.addRoom(room); // otele bu odayı ekle
                         // komutu öğrenmek için listenin ilk elemanını kontrol et
                     }
-                } else if (commandList[0].equals(("addEmployee"))) {
+                }
+                else if (commandList[0].equals(("addEmployee"))) {
                     String name = commandList[1];
                     String surname = commandList[2];
                     String gender = commandList[3];
@@ -73,16 +73,38 @@ public class Main {
                     DEUCengHotel.addRezervation(targetRoom, rezervation);
                 }
                 else if (commandList[0].equals("listReservations")) {
-                    DEUCengHotel.listRezervation();
+                    DEUCengHotel.listRezervation();}
+                else if(commandList[0].equals("searchCustomer")) {
+                    String targetCustomer = commandList[1];
+                    DEUCengHotel.findCustomerbyName(targetCustomer);
+
+                }
+                else if(commandList[0].equals("searchRoom")) {
+                    String startdate = commandList[1];
+                    String enddate = commandList[2];
+                    DEUCengHotel.findRoombyDate(startdate,enddate);
+
+                }
+
+                else if(commandList[0].equals("deleteEmployee")) {
+                    int employeeid = Integer.parseInt(commandList[1]);
+                    DEUCengHotel.deleteEmployee(employeeid);
 
 
                 }
+                else if(commandList[0].equals("statistics")) {
+                    DEUCengHotel.findMostRezervedRoom();
+                }
+
+
+
 
             }
             reader.close();
         } catch (
                 FileNotFoundException e) {
-            System.out.println("command txt cannot be found");
+            System.out.println("command.txt cannot be found");
+
 
 
         }
