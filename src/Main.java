@@ -1,6 +1,13 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+// TODO: 4.03.2023  
+//  - verilen iki tarih arasında gün sayısı hesaplama
+//  - net kar oranı
+//  - searchRoom 
+
+
+
 
 public class Main {
 
