@@ -85,6 +85,7 @@ public class Hotel {
     // rezervation
     void addRezervation(Room room, Reservation reservation) {
         /*
+        !! !! // burayı rezerve edilmiş oda kontrolü için yazmıştım ama çalıştıramadım.
         boolean hasRezerved = false;
         for (int i = 0; i < rezervations.length; i++) {
             if (room.roomId == rezervations[i].roomid) {
@@ -174,7 +175,7 @@ public class Hotel {
             }
         }
 
-    }
+    } // Todo YAPILACAK
 
     void findMostRezervedRoom() {
         int maxReserve = rooms[0].rezervationCount;
