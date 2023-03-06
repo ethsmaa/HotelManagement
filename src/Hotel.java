@@ -19,79 +19,98 @@ public class Hotel {
             while (reader.hasNextLine()) { // dosyanın sonuna gelene kadar
                 String line = reader.nextLine(); // satırları oku
                 String[] commandList = line.split(";"); // her bir satırı ; ile ayır
-                if (commandList[0].equals("addRoom")) {
-                    int numberOfRoom = Integer.parseInt(commandList[1]); // 2. elemanı integere çevir
-                    for (int i = 0; i < numberOfRoom; i++) { //oda sayısı kadar değişken tut
-                        String type = commandList[2];
-                        Boolean airCondition = Boolean.parseBoolean(commandList[3]);
-                        Boolean balcony = Boolean.parseBoolean(commandList[4]);
-                        float price = Float.parseFloat(commandList[5]);
+                String command = commandList[0];
+                switch (command) {
+                    case "addRoom":
+                        int numberOfRoom = Integer.parseInt(commandList[1]); // 2. elemanı integere çevir
 
-                        Room room = new Room(type, airCondition, balcony, price); // bu attribute'lara sahip room classında yeni bir eleman
-                        addRoom(room); // otele bu odayı ekle
-                        // komutu öğrenmek için listenin ilk elemanını kontrol et
+                        for (int i = 0; i < numberOfRoom; i++) { //oda sayısı kadar değişken tut
+                            String type = commandList[2];
+                            Boolean airCondition = Boolean.parseBoolean(commandList[3]);
+                            Boolean balcony = Boolean.parseBoolean(commandList[4]);
+                            float price = Float.parseFloat(commandList[5]);
+
+                            Room room = new Room(type, airCondition, balcony, price); // bu attribute'lara sahip room classında yeni bir eleman
+                            addRoom(room); // otele bu odayı ekle
+                            // komutu öğrenmek için listenin ilk elemanını kontrol et
+                        }
+                        break;
+                    case ("addEmployee"): {
+                        String name = commandList[1];
+                        String surname = commandList[2];
+                        String gender = commandList[3];
+                        String birthdate = commandList[4];
+                        String addresstext = commandList[5];
+                        String district = commandList[6];
+                        String city = commandList[7];
+                        String phone = commandList[8];
+                        String job = commandList[9];
+                        int salary = Integer.parseInt(commandList[10]);
+
+                        Employee employee = new Employee(name, surname, gender, birthdate, addresstext, district, city, phone, job
+                                , salary);
+                        addEmployee(employee);
+                        break;
                     }
-                } else if (commandList[0].equals(("addEmployee"))) {
-                    String name = commandList[1];
-                    String surname = commandList[2];
-                    String gender = commandList[3];
-                    String birthdate = commandList[4];
-                    String addresstext = commandList[5];
-                    String district = commandList[6];
-                    String city = commandList[7];
-                    String phone = commandList[8];
-                    String job = commandList[9];
-                    int salary = Integer.parseInt(commandList[10]);
+                    case ("addCustomer"): {
+                        String name = commandList[1];
+                        String surname = commandList[2];
+                        String gender = commandList[3];
+                        String birthdate = commandList[4];
+                        String addresstext = commandList[5];
+                        String district = commandList[6];
+                        String city = commandList[7];
+                        String phone = commandList[8];
 
-                    Employee employee = new Employee(name, surname, gender, birthdate, addresstext, district, city, phone, job
-                            , salary);
-                    addEmployee(employee);
-                } else if (commandList[0].equals(("addCustomer"))) {
-                    String name = commandList[1];
-                    String surname = commandList[2];
-                    String gender = commandList[3];
-                    String birthdate = commandList[4];
-                    String addresstext = commandList[5];
-                    String district = commandList[6];
-                    String city = commandList[7];
-                    String phone = commandList[8];
+                        Customer customer = new Customer(name, surname, gender, birthdate, addresstext, district, city, phone);
+                        addCustomer(customer);
 
-                    Customer customer = new Customer(name, surname, gender, birthdate, addresstext, district, city, phone);
-                    addCustomer(customer);
+                        break;
+                    }
+                    case "listRooms":
+                        listRoom();
+                        break;
+                    case ("listEmployees"):
+                        listEmployee();
+                        break;
+                    case ("listCustomers"):
+                        listCustomer();
+                        break;
+                    case "addReservation": {
+                        int customerid = Integer.parseInt(commandList[1]);
+                        int roomid = Integer.parseInt(commandList[2]);
 
-                } else if (commandList[0].equals("listRooms")) {
-                    listRoom();
-                } else if (commandList[0].equals(("listEmployees"))) {
-                    listEmployee();
-                } else if (commandList[0].equals(("listCustomers"))) {
-                    listCustomer();
-                } else if (commandList[0].equals("addReservation")) {
-                    int customerid = Integer.parseInt(commandList[1]);
-                    int roomid = Integer.parseInt(commandList[2]);
+                        String startdate = commandList[3];
+                        String enddate = commandList[4];
 
-                    String startdate = commandList[3];
-                    String enddate = commandList[4];
+                        Reservation rezervation = new Reservation(customerid, roomid, startdate, enddate);
+                        addRezervation(rezervation);
+                        break;
+                    }
+                    case "listReservations":
+                        listRezervation();
+                        break;
+                    case "searchCustomer":
+                        String targetCustomer = commandList[1];
+                        findCustomerbyName(targetCustomer);
 
-                    Reservation rezervation = new Reservation(customerid, roomid, startdate, enddate);
-                    addRezervation(rezervation);
-                } else if (commandList[0].equals("listReservations")) {
-                    listRezervation();
-                } else if (commandList[0].equals("searchCustomer")) {
-                    String targetCustomer = commandList[1];
-                    findCustomerbyName(targetCustomer);
+                        break;
+                    case "searchRoom": {
+                        String startdate = commandList[1];
+                        String enddate = commandList[2];
+                        findRoombyDate(startdate, enddate);
 
-                } else if (commandList[0].equals("searchRoom")) {
-                    String startdate = commandList[1];
-                    String enddate = commandList[2];
-                    findRoombyDate(startdate, enddate);
-
-                } else if (commandList[0].equals("deleteEmployee")) {
-                    int employeeid = Integer.parseInt(commandList[1]);
-                    deleteEmployee(employeeid);
+                        break;
+                    }
+                    case "deleteEmployee":
+                        int employeeid = Integer.parseInt(commandList[1]);
+                        deleteEmployee(employeeid);
 
 
-                } else if (commandList[0].equals("statistics")) {
+                        break;
+                    case "statistics":
 
+                        break;
                 }
 
 
