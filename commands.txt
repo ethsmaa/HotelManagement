@@ -1,13 +1,12 @@
+addRoom;2;regular;true;false;1000
+addRoom;1;deluxe;true;true;2000
+addRoom;1;suite;true;true;4000
 
-addEmployee;Ali;Arslan;male;5.5.1977;120. Sokak No:12;Bornova;Izmir;+90234445566;admin;16000
-addEmployee;Adem;Fidan;male;29.5.1988;Ada Cad. No:10;Buca;Izmir;+902326667788;receptionist;8000
-addEmployee;Burcu;Kaya;female;15.6.1980;Yaka Cad. No:7;Urla;Izmir;+902321112233;housekeeper;6000
 
-listEmployees
+listRooms
 
-deleteEmployee;2
 
-listEmployees
+
 
 
 
