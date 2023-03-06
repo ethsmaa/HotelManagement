@@ -16,7 +16,7 @@ public class HotelManagement {
         try {
             File commandFile = new File("commands.txt"); // dosyayı aç
             Scanner reader = new Scanner(commandFile);
-            while (reader.hasNextLine()) { // dosyanın sonuna gelene kadar
+            while (reader.hasNextLine())    { // dosyanın sonuna gelene kadar
                 String line = reader.nextLine(); // satırları oku
                 String[] commandList = line.split(";"); // her bir satırı ; ile ayır
                 String command = commandList[0];
@@ -251,6 +251,8 @@ public class HotelManagement {
                     }
 
                 }
+
+
             } else if (name.contains("?")) {
                 if (customers[i] != null) {
                     if (customers[i].customerName.length() == name.length()) {
@@ -279,7 +281,4 @@ public class HotelManagement {
         }
 
     } // Todo YAPILACAK
-
-
-
 }
