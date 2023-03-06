@@ -1,13 +1,13 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-public class Hotel {
+public class HotelManagement {
     Room[] rooms = new Room[30]; // odaların tutulduğu Room classı türünde array
     Employee[] employees = new Employee[50]; // işçilerin tutulduğu employee türünde array
     Customer[] customers = new Customer[30]; // müşterilerin tutulduğu customer türünde array
     Reservation[] rezervations = new Reservation[30];
 
-    // todo odaların boş olpu olammasını tutanb i array olaiblir mi??
+    // todo odaların boş olup olmamasını tutan bir array olabilir mi?
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
