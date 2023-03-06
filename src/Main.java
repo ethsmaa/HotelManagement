@@ -6,16 +6,16 @@ import java.util.Scanner;
 //  - net kar oranı
 //  - searchRoom 
 
-
-
+// deleteEmployees işlemi
 
 public class Main {
 
     public static void main(String[] args) {
         try { // error olmadığı sürece
+            Hotel DEUCengHotel = new Hotel(); // otel class'ı içinde obje oluştur
+
             File commandFile = new File("commands.txt"); // dosyayı aç
             Scanner reader = new Scanner(commandFile);
-            Hotel DEUCengHotel = new Hotel(); // otel class'ı içinde obje oluştur
 
 
             while (reader.hasNextLine()) { // dosyanın sonuna gelene kadar
@@ -33,8 +33,7 @@ public class Main {
                         DEUCengHotel.addRoom(room); // otele bu odayı ekle
                         // komutu öğrenmek için listenin ilk elemanını kontrol et
                     }
-                }
-                else if (commandList[0].equals(("addEmployee"))) {
+                } else if (commandList[0].equals(("addEmployee"))) {
                     String name = commandList[1];
                     String surname = commandList[2];
                     String gender = commandList[3];
@@ -78,40 +77,31 @@ public class Main {
 
                     Reservation rezervation = new Reservation(customerid, roomid, startdate, enddate);
                     DEUCengHotel.addRezervation(targetRoom, rezervation);
-                }
-                else if (commandList[0].equals("listReservations")) {
-                    DEUCengHotel.listRezervation();}
-                else if(commandList[0].equals("searchCustomer")) {
+                } else if (commandList[0].equals("listReservations")) {
+                    DEUCengHotel.listRezervation();
+                } else if (commandList[0].equals("searchCustomer")) {
                     String targetCustomer = commandList[1];
                     DEUCengHotel.findCustomerbyName(targetCustomer);
 
-                }
-                else if(commandList[0].equals("searchRoom")) {
+                } else if (commandList[0].equals("searchRoom")) {
                     String startdate = commandList[1];
                     String enddate = commandList[2];
-                    DEUCengHotel.findRoombyDate(startdate,enddate);
+                    DEUCengHotel.findRoombyDate(startdate, enddate);
 
-                }
-
-                else if(commandList[0].equals("deleteEmployee")) {
+                } else if (commandList[0].equals("deleteEmployee")) {
                     int employeeid = Integer.parseInt(commandList[1]);
                     DEUCengHotel.deleteEmployee(employeeid);
 
 
-                }
-                else if(commandList[0].equals("statistics")) {
-                    DEUCengHotel.findMostRezervedRoom();
-                }
+                } else if (commandList[0].equals("statistics")) {
 
-
+                }
 
 
             }
             reader.close();
-        } catch (
-                FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("command.txt cannot be found");
-
 
 
         }

@@ -6,7 +6,7 @@ public class Room {
     boolean airCondition;
     boolean balcony;
     float price;
-    int rezervationCount = 1; // todo : istatiste işime yarayacak
+
 
 
     public Room(String roomType, boolean airCondition, boolean balcony, float price) {

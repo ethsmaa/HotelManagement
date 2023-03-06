@@ -4,6 +4,8 @@ public class Hotel {
     Customer[] customers = new Customer[30]; // müşterilerin tutulduğu customer türünde array
     Reservation[] rezervations = new Reservation[30];
 
+// todo odaların boş olpu olammasını tutanb i array olaiblir mi??
+
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
@@ -18,16 +20,20 @@ public class Hotel {
         rooms[roomIndex] = room;
         roomIndex++;
 
+
+
     }
 
+
     void listRoom() {
-        System.out.println(rooms[0]);
+        //System.out.println(rooms[0]);
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i] != null) {
                 String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
                 String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
                 System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId, rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
-            } else break;
+            }
+            else break;
         }
 
     }
@@ -98,8 +104,7 @@ public class Hotel {
 
         rezervations[rezervationIndex] = reservation;
         rezervationIndex++;
-        if (room != null)
-            room.rezervationCount++;
+       
     }
 
     void listRezervation() {
@@ -177,24 +182,8 @@ public class Hotel {
 
     } // Todo YAPILACAK
 
-    void findMostRezervedRoom() {
-        int maxReserve = rooms[0].rezervationCount;
 
-        for (int i = 0; i < rooms.length; i++) { // rezerveler içinde en çok rezervasyon yapilmis odayı bul
-            if (rooms[i] != null) {
-                if (rooms[i].rezervationCount > maxReserve)
-                    maxReserve = rooms[i].rezervationCount;
-            }
-        }
-        for (int i = 0; i < rooms.length; i++) {
-            if (rooms[i] != null) {
-                if (maxReserve == rooms[i].rezervationCount) {
-                    System.out.println(String.format("The most reserved room = Room #%d", rooms[i].roomId));
-                }
 
-            }
-        }
-    }
 
 
 }
