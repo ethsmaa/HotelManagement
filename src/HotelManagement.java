@@ -1,38 +1,40 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
 public class HotelManagement {
-    Room[] rooms = new Room[30]; // odaların tutulduğu Room classı türünde array
-    Employee[] employees = new Employee[50]; // işçilerin tutulduğu employee türünde array
-    Customer[] customers = new Customer[30]; // müşterilerin tutulduğu customer türünde array
+
+    Room[] rooms = new Room[30]; // array of type Room
+    Employee[] employees = new Employee[50];
+    Customer[] customers = new Customer[30];
     Reservation[] rezervations = new Reservation[30];
 
-    // todo odaların boş olup olmamasını tutan bir array olabilir mi?
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
     int rezervationIndex = 0;
+
+
     void init() {
         try {
-            File commandFile = new File("commands.txt"); // dosyayı aç
+            File commandFile = new File("commands.txt"); // open file
             Scanner reader = new Scanner(commandFile);
-            while (reader.hasNextLine())    { // dosyanın sonuna gelene kadar
-                String line = reader.nextLine(); // satırları oku
-                String[] commandList = line.split(";"); // her bir satırı ; ile ayır
+            while (reader.hasNextLine()) { // until you reach the end of the file
+                String line = reader.nextLine(); // read lines
+                String[] commandList = line.split(";"); // separate each line with ","
                 String command = commandList[0];
                 switch (command) {
                     case "addRoom":
-                        int numberOfRoom = Integer.parseInt(commandList[1]); // 2. elemanı integere çevir
+                        int numberOfRoom = Integer.parseInt(commandList[1]); // Convert 2nd element to integer
 
-                        for (int i = 0; i < numberOfRoom; i++) { //oda sayısı kadar değişken tut
+                        for (int i = 0; i < numberOfRoom; i++) { //keep as variable as the number of rooms
                             String type = commandList[2];
                             Boolean airCondition = Boolean.parseBoolean(commandList[3]);
                             Boolean balcony = Boolean.parseBoolean(commandList[4]);
                             float price = Float.parseFloat(commandList[5]);
 
-                            Room room = new Room(type, airCondition, balcony, price); // bu attribute'lara sahip room classında yeni bir eleman
-                            addRoom(room); // otele bu odayı ekle
-                            // komutu öğrenmek için listenin ilk elemanını kontrol et
+                            Room room = new Room(type, airCondition, balcony, price); //new element in the room class with these attributes
+                            addRoom(room); // add this room to the hotel
                         }
                         break;
                     case ("addEmployee"): {
@@ -125,6 +127,7 @@ public class HotelManagement {
 
 
     }
+
     // rooms
     void addRoom(Room room) {
         if (roomIndex >= 30) return;
@@ -134,17 +137,19 @@ public class HotelManagement {
         roomIndex++;
 
     }
+
     void listRoom() {
-        //System.out.println(rooms[0]);
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i] != null) {
                 String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
                 String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
-                System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId, rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
+                System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
+                        rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
             } else break;
         }
 
     }
+
     // employee
     void addEmployee(Employee employee) {
         if (employeeIndex < 50) {
@@ -154,6 +159,7 @@ public class HotelManagement {
 
         }
     }
+
     void deleteEmployee(int id) {
         for (int i = 0; i < employees.length; i++) {
             if (id == employees[i].employeeid) {
@@ -162,6 +168,7 @@ public class HotelManagement {
             }
         }
     }
+
     void listEmployee() {
 
         for (int i = 0; i < employees.length; i++) {
@@ -172,13 +179,16 @@ public class HotelManagement {
             }
         }
     }
+
     // customer
     void addCustomer(Customer customer) {
         customer.customerid = customerIndex + 1;
         customers[customerIndex] = customer;
         customerIndex++;
     }
+
     void listCustomer() {
+
         System.out.println("listCustomer");
         for (int i = 0; i < customers.length; i++) {
             if (customers[i] != null) {
@@ -191,8 +201,9 @@ public class HotelManagement {
 
         }
     }
+
     // rezervation
-    void addRezervation( Reservation reservation) {
+    void addRezervation(Reservation reservation) {
         /*
         !! !! // burayı rezerve edilmiş oda kontrolü için yazmıştım ama çalıştıramadım.
         boolean hasRezerved = false;
@@ -209,6 +220,7 @@ public class HotelManagement {
         rezervationIndex++;
 
     }
+
     void listRezervation() {
         for (int i = 0; i < rezervations.length; i++) {
             if (rezervations[i] != null) {
@@ -222,6 +234,7 @@ public class HotelManagement {
 
 
     }
+
     // search functions
     Room findRoomById(int id) {
         for (int i = 0; i < rooms.length; i++) {
@@ -232,6 +245,7 @@ public class HotelManagement {
         }
         return null;
     }
+
     int findCustomerIndexById(int id) {
         for (int i = 0; i < customers.length; i++) {
             if (customers[i].customerid == id)
@@ -239,20 +253,16 @@ public class HotelManagement {
         }
         return 0;
     }
+
     void findCustomerbyName(String name) {
         for (int i = 0; i < customers.length; i++) {
             if (name.contains("*")) {  // yıldızlı işlemler
                 int targetIndex = name.indexOf('*');
-                if (customers[i] != null) {
-                    if (customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
-                        System.out.println(String.format("Customer  #%d  %s  %s  %s  %s  %s",
-                                customers[i].customerid, customers[i].customerName, customers[i].customerSurname,
-                                customers[i].customerGender, customers[i].customerBirthdate, customers[i].customerPhone));
-                    }
-
+                if (customers[i] != null && customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
+                    System.out.println(String.format("Customer  #%d  %s  %s  %s  %s  %s",
+                            customers[i].customerid, customers[i].customerName, customers[i].customerSurname,
+                            customers[i].customerGender, customers[i].customerBirthdate, customers[i].customerPhone));
                 }
-
-
             } else if (name.contains("?")) {
                 if (customers[i] != null) {
                     if (customers[i].customerName.length() == name.length()) {
@@ -271,8 +281,8 @@ public class HotelManagement {
             }
 
         }
-        return;
     }
+
     void findRoombyDate(String startDate, String endDate) {
         for (int i = 0; i < rooms.length; i++) {
             if (startDate.equals(rooms[i])) {
@@ -281,4 +291,7 @@ public class HotelManagement {
         }
 
     } // Todo YAPILACAK
+
+
+
 }
