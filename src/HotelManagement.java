@@ -141,7 +141,7 @@ public class HotelManagement {
                         int yearEnd = Integer.parseInt(endDates[2]);
                         Date endDate = new Date(dayEnd,monthEnd,yearEnd);
 
-                        calistir(startDate,endDate);
+                        calculateDaysBetweenDates(startDate,endDate);
 
                 }
 
@@ -636,11 +636,11 @@ public class HotelManagement {
 
     }
 
-     int aydakigun(Date date)
+     int calculateDays(Date date)
     {
         int day;
         int month = date.month;
-        int gunsayisi = date.day;
+        int daycount = date.day;
 
 
         for(int i = 1 ; i<month; i++) {
@@ -652,15 +652,13 @@ public class HotelManagement {
                 day = 29;
             else
                 day = 30; // 4, 6, 11
-            gunsayisi+=day;
+            daycount+=day;
         }
-        return gunsayisi;
+        return daycount;
     }
-    void  calistir(Date firstDate, Date secondDate) {
-        int dayBetween = aydakigun(secondDate) - aydakigun(firstDate);
+    void  calculateDaysBetweenDates(Date firstDate, Date secondDate) {
+        int dayBetween = calculateDays(secondDate) - calculateDays(firstDate);
         System.out.println(dayBetween);
-
-
     }
 
 }
