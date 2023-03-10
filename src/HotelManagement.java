@@ -168,9 +168,7 @@ public class HotelManagement {
                     case "statistics":
                         mostReservedRoomandCustomer();
                         break;
-                    case "bul":
-                        mostReservedRoomandCustomer();
-                        break;
+                  
                 }
 
 
@@ -424,7 +422,7 @@ public class HotelManagement {
         }
     }
 //most reserved room
-void mostReservedRoomandCustomer(){ // en fazla süre kalınan oda ve kalan müşteri 
+void mostReservedRoomandCustomer(){ // en fazla süre kalınan oda ve kalan müşteri
 
         int max = reservationDays[0];
         for(int i = 1; i<reservationDays.length; i++) {
