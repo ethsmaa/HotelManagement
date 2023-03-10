@@ -1,30 +1,10 @@
-addEmployee;Ali;Arslan;male;5.5.1977;120. Sokak No:12;Bornova;Izmir;+90234445566;admin;16000
-addEmployee;Adem;Fidan;male;29.5.1988;Ada Cad. No:10;Buca;Izmir;+902326667788;receptionist;8000
-addEmployee;Burcu;Kaya;female;15.6.1980;Yaka Cad. No:7;Urla;Izmir;+902321112233;housekeeper;6000
-
-
-listEmployees
 addCustomer;Zeynep;Ak;female;15.6.1980;Ata Cad. No:2;Urla;Izmir;+902321112233
 addCustomer;Cem;Kara;male;5.12.2000;150. Sokak No:7 D:3;Taksim;Istanbul;+902125556677
 addCustomer;Zerrin;Dal;female;12.7.1995;Demir Cad. No:3;Mamak;Ankara;+903123332211
 
 
-listCustomers
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+addReservation;3;1;25.4.2024;30.4.2024
+addReservation;1;2;20.4.2024;30.4.2024
+addReservation;2;3;28.4.2024;5.5.2024
+listReservations

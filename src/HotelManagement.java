@@ -243,7 +243,7 @@ public class HotelManagement {
 
     void listCustomer() {
 
-        System.out.println("listCustomers");
+        System.out.println("listCustomer");
         for (int i = 0; i < customers.length; i++) {
             if (customers[i] != null) {
                 System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
@@ -281,7 +281,7 @@ public class HotelManagement {
             if (rezervations[i] != null) {
                 int targetCustomerIndex = findCustomerIndexById(rezervations[i].customerid);
                 System.out.println(String.format("Room  #%d  %s %s  %s   %s", rezervations[i].roomid, customers[targetCustomerIndex].customerName,
-                        customers[targetCustomerIndex].customerSurname, rezervations[i].startDate, rezervations[i].endDate));
+                        customers[targetCustomerIndex].customerSurname, rezervations[i].startDateString, rezervations[i].endDateString));
             }
 
 
