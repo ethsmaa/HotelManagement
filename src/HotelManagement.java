@@ -314,9 +314,11 @@ public class HotelManagement {
             if (name.contains("*")) {  // yıldızlı işlemler
                 int targetIndex = name.indexOf('*');
                 if (customers[i] != null && customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
-                    System.out.println(String.format("Customer  #%d  %s  %s  %s  %s  %s",
-                            customers[i].customerid, customers[i].customerName, customers[i].customerSurname,
-                            customers[i].customerGender, customers[i].customerBirthdate, customers[i].customerPhone));
+                    System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
+                            customers[i].customerid, customers[i].customerName,
+                            customers[i].customerSurname, customers[i].customerGender,
+                            customers[i].customerBirthdate,customers[i].address.city , customers[i].customerPhone.countryCode,
+                            customers[i].customerPhone.cityCode,customers[i].customerPhone.number ));
                 }
             } else if (name.contains("?")) {
                 if (customers[i] != null) {
@@ -324,9 +326,11 @@ public class HotelManagement {
                         int targetIndex = name.indexOf('?');
                         //
                         if (customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
-                            System.out.println(String.format("Customer  #%d  %s  %s  %s  %s  %s",
-                                    customers[i].customerid, customers[i].customerName, customers[i].customerSurname,
-                                    customers[i].customerGender, customers[i].customerBirthdate, customers[i].customerPhone));
+                            System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
+                                    customers[i].customerid, customers[i].customerName,
+                                    customers[i].customerSurname, customers[i].customerGender,
+                                    customers[i].customerBirthdate,customers[i].address.city , customers[i].customerPhone.countryCode,
+                                    customers[i].customerPhone.cityCode,customers[i].customerPhone.number ));
                         }
                     }
 

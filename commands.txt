@@ -8,3 +8,5 @@ addReservation;3;1;25.4.2024;30.4.2024
 addReservation;1;2;20.4.2024;30.4.2024
 addReservation;2;3;28.4.2024;5.5.2024
 listReservations
+
+searchCustomer;Ze*
