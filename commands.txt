@@ -2,6 +2,8 @@ addReservation;3;1;25.4.2024;30.4.2024
 hesapla;3.8.2024;10.9.2024
 
 
+addCustomer;Zeynep;Ak;female;15.6.1980;Ata Cad. No:2;Urla;Izmir;+902321112233
+listCustomers
 
 
 

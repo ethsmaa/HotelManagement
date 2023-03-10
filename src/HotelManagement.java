@@ -67,8 +67,9 @@ public class HotelManagement {
                         int day = Integer.parseInt(birthdates[0]);
                         int month = Integer.parseInt(birthdates[1]);
                         int year = Integer.parseInt(birthdates[2]);
+                        Address address = new Address(addresstext,district,city);
                         Date date = new Date(day,month,year);
-                        Customer customer = new Customer(name, surname, gender, birthdate, addresstext, district, city, phone,date);
+                        Customer customer = new Customer(name, surname, gender, birthdate, phone,date,address);
                         addCustomer(customer);
 
                         break;
@@ -222,10 +223,10 @@ public class HotelManagement {
         System.out.println("listCustomer");
         for (int i = 0; i < customers.length; i++) {
             if (customers[i] != null) {
-                System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s",
+                System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s %s",
                         customers[i].customerid, customers[i].customerName,
                         customers[i].customerSurname, customers[i].customerGender,
-                        customers[i].customerBirthdate, customers[i].customerPhone));
+                        customers[i].customerBirthdate,customers[i].address.city , customers[i].customerPhone));
             }
 
 
