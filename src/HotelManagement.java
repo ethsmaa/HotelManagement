@@ -2,6 +2,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+// todo
+// address her birey için güncellenecek
+// telefon her birey için güncellenecek
+// date bulunduğu her yer için güncellenecek
+// omer canın attığı kod eklenecek
+
 public class HotelManagement {
 
     Room[] rooms = new Room[30]; // array of type Room
@@ -62,14 +68,20 @@ public class HotelManagement {
                         String addresstext = commandList[5];
                         String district = commandList[6];
                         String city = commandList[7];
-                        String phone = commandList[8];
+                        String countryCode = commandList[8].substring(0,3);
+                        String cityCode = commandList[8].substring(3,6);
+                        String number = commandList[8].substring(6);
                         String birthdates[] = commandList[4].split("\\.");
+
                         int day = Integer.parseInt(birthdates[0]);
                         int month = Integer.parseInt(birthdates[1]);
                         int year = Integer.parseInt(birthdates[2]);
+
                         Address address = new Address(addresstext,district,city);
                         Date date = new Date(day,month,year);
-                        Customer customer = new Customer(name, surname, gender, birthdate, phone,date,address);
+                        Phone phone = new Phone(countryCode,cityCode,number);
+                        Customer customer = new Customer(name, surname, gender, birthdate,phone,date,address);
+
                         addCustomer(customer);
 
                         break;
@@ -223,10 +235,11 @@ public class HotelManagement {
         System.out.println("listCustomer");
         for (int i = 0; i < customers.length; i++) {
             if (customers[i] != null) {
-                System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s %s",
+                System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
                         customers[i].customerid, customers[i].customerName,
                         customers[i].customerSurname, customers[i].customerGender,
-                        customers[i].customerBirthdate,customers[i].address.city , customers[i].customerPhone));
+                        customers[i].customerBirthdate,customers[i].address.city , customers[i].customerPhone.countryCode,
+                        customers[i].customerPhone.cityCode,customers[i].customerPhone.number ));
             }
 
 

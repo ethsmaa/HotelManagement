@@ -4,12 +4,12 @@ public class Customer {
     String customerSurname;
     String customerGender;
     String customerBirthdate;
-    String customerPhone;
+    Phone customerPhone;
     Date birthdate;
     Address address;
 
     public Customer(String name, String surname, String gender,
-                    String birthdateString, String phone, Date date, Address address) {
+                    String birthdateString, Phone phone, Date date, Address address) {
         customerName = name;
         customerSurname = surname;
         customerGender = gender;
