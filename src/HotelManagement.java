@@ -14,14 +14,14 @@ public class HotelManagement {
     Room[] rooms = new Room[30]; // array of type Room
     Employee[] employees = new Employee[50];
     Customer[] customers = new Customer[30];
-    Reservation[] rezervations = new Reservation[30];
-    int[] doluOdaIdleri = new int[30];
+    Reservation[] reservations = new Reservation[30];
+    int[] reservedRoomIds = new int[30];
 
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
     int rezervationIndex = 0;
-    int doluodaidsIndex = 0;
+    int reservedRoomIndex = 0;
 
 
     void init() {
@@ -257,21 +257,21 @@ public class HotelManagement {
     // rezervation
     void addRezervation(Reservation reservation) {
 
-        rezervations[rezervationIndex] = reservation;
+        reservations[rezervationIndex] = reservation;
         rezervationIndex++;
 
-        doluOdaIdleri[doluodaidsIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
-        doluodaidsIndex++;
+        reservedRoomIds[reservedRoomIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
+        reservedRoomIndex++;
 
 
     }
 
     void listRezervation() {
-        for (int i = 0; i < rezervations.length; i++) {
-            if (rezervations[i] != null) {
-                int targetCustomerIndex = findCustomerIndexById(rezervations[i].customerid);
-                System.out.println(String.format("Room  #%d  %s %s  %s   %s", rezervations[i].roomid, customers[targetCustomerIndex].customerName,
-                        customers[targetCustomerIndex].customerSurname, rezervations[i].startDateString, rezervations[i].endDateString));
+        for (int i = 0; i < reservations.length; i++) {
+            if (reservations[i] != null) {
+                int targetCustomerIndex = findCustomerIndexById(reservations[i].customerid);
+                System.out.println(String.format("Room  #%d  %s %s  %s   %s", reservations[i].roomid, customers[targetCustomerIndex].customerName,
+                        customers[targetCustomerIndex].customerSurname, reservations[i].startDateString, reservations[i].endDateString));
             }
 
 
@@ -283,7 +283,7 @@ public class HotelManagement {
     // search functions
     Room findRoomById(int id) {
         for (int i = 0; i < rooms.length; i++) {
-            if (rezervations[i] != null) {
+            if (reservations[i] != null) {
                 if (rooms[i].roomId == id)
                     return rooms[i];
             }
@@ -380,11 +380,11 @@ public class HotelManagement {
 
     void searchRoom(Date startDate, Date endDate) {
 
-        for (int i = 0; i < rezervations.length; i++) {
+        for (int i = 0; i < reservations.length; i++) {
 
-            if (rezervations[i] != null) { //ortada bir rezervasyon var ama tarih kontrolü için üstteki fonksiyona yollamalıyız
-                if (isBetweenDates(rezervations[i], startDate, endDate) == true) { // tarih kontrolünden geçtiyse
-                    Room room = findRoomById(rezervations[i].roomid); // bu odayı bul
+            if (reservations[i] != null) { //ortada bir rezervasyon var ama tarih kontrolü için üstteki fonksiyona yollamalıyız
+                if (isBetweenDates(reservations[i], startDate, endDate) == true) { // tarih kontrolünden geçtiyse
+                    Room room = findRoomById(reservations[i].roomid); // bu odayı bul
 
                     String balconyText = room.balcony ? "balcony" : "non-balcony";
                     String airconditionText = room.airCondition ? "aircondition" : "no-aircondition";
@@ -402,7 +402,7 @@ public class HotelManagement {
         for (int i = 0; i < rooms.length; i++) {
 
             if (rooms[i] != null) {
-                if (rooms[i].roomId != doluOdaIdleri[j]) {
+                if (rooms[i].roomId != reservedRoomIds[j]) {
                     String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
                     String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
                     System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
@@ -412,9 +412,25 @@ public class HotelManagement {
             }
         }
     }
+//most reserved room
+void mostReservedRoom(){ // en fazla süre kalınan oda
+
 
 }
-//most reserved room
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 
 
