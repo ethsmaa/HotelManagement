@@ -1,33 +1,27 @@
 public class Employee {
     int employeeid;
+    String name;
+    String surname;
+    String gender;
+    String birthdayString;
+    Phone phone;
     String job;
-    String employeeName;
-    String employeSurname;
-    String employeeBirthdate;
-    String employeeGender;
-    String employeeAdress;
-    String district;
-    String city;
-    String employeePhone;
-
+    Address address;
     int salary;
+    Date birthdate;
 
-    public Employee(String name, String surname, String gender,
-                    String birthdate, String adress, String district,
-                    String city, String phone, String job, int salary) {
 
-        employeeName = name;
-        employeSurname = surname;
-        employeeGender = gender;
-        employeeBirthdate = birthdate;
-        employeeAdress = adress;
-        this.district = district;
-        this.city = city;
-        employeePhone = phone;
+    public Employee(String name, String surname,
+                    String gender, String birthdayString, Phone phone,
+                    String job, Address address, int salary, Date birthdate) {
+        this.name = name;
+        this.surname = surname;
+        this.gender = gender;
+        this.birthdayString = birthdayString;
+        this.phone = phone;
         this.job = job;
+        this.address = address;
         this.salary = salary;
-
+        this.birthdate = birthdate;
     }
-
-
 }

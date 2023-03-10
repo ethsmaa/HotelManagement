@@ -51,12 +51,23 @@ public class HotelManagement {
                         String addresstext = commandList[5];
                         String district = commandList[6];
                         String city = commandList[7];
-                        String phone = commandList[8];
+                        String countryCode = commandList[8].substring(0,3);
+                        String cityCode = commandList[8].substring(3,6);
+                        String number = commandList[8].substring(6);
                         String job = commandList[9];
                         int salary = Integer.parseInt(commandList[10]);
+                        String birthdates[] = commandList[4].split("\\.");
 
-                        Employee employee = new Employee(name, surname, gender, birthdate, addresstext, district, city, phone, job
-                                , salary);
+                        int day = Integer.parseInt(birthdates[0]);
+                        int month = Integer.parseInt(birthdates[1]);
+                        int year = Integer.parseInt(birthdates[2]);
+                        Date date = new Date(day,month,year);
+
+
+
+                        Phone phone = new Phone(countryCode,cityCode,number);
+                        Address address = new Address(addresstext,district,city);
+                        Employee employee = new Employee(name, surname, gender, birthdate, phone, job, address, salary, date);
                         addEmployee(employee);
                         break;
                     }
@@ -213,11 +224,11 @@ public class HotelManagement {
     }
 
     void listEmployee() {
-
+        System.out.println("listEmployees");
         for (int i = 0; i < employees.length; i++) {
             if (employees[i] != null) {
-                System.out.println(String.format("Employee  #%d  %s  %s  %s  %s  %s", employees[i].employeeid, employees[i].employeeName,
-                        employees[i].employeSurname, employees[i].employeeGender, employees[i].employeeBirthdate,
+                System.out.println(String.format("  Employee  #%d  %s  %s  %s  %s  %s", employees[i].employeeid, employees[i].name,
+                        employees[i].surname, employees[i].gender, employees[i].birthdayString,
                         employees[i].job));
             }
         }
@@ -232,7 +243,7 @@ public class HotelManagement {
 
     void listCustomer() {
 
-        System.out.println("listCustomer");
+        System.out.println("listCustomers");
         for (int i = 0; i < customers.length; i++) {
             if (customers[i] != null) {
                 System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
