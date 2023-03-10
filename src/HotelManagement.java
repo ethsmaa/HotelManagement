@@ -120,7 +120,7 @@ public class HotelManagement {
             reader.close();
         } catch (
                 FileNotFoundException e) {
-            System.out.println("command.txt cannot be found");
+            System.out.println("commands.txt cannot be found");
 
 
         }
@@ -283,15 +283,328 @@ public class HotelManagement {
         }
     }
 
-    void findRoombyDate(String startDate, String endDate) {
-        for (int i = 0; i < rooms.length; i++) {
-            if (startDate.equals(rooms[i])) {
+    void findRoombyDate(String startDate, String endDate)
+    {
+        int[] doluroom= new int[30];
+        int doluroomindex=0;
 
-            }
+        String[] startdatear= startDate.split("\\.");
+        int startday=Integer.parseInt(startdatear[0]);
+        int startmonth=Integer.parseInt(startdatear[1]);
+
+        String[] enddatear= endDate.split("\\.");
+        int endday=Integer.parseInt(enddatear[0]);
+        int endmonth=Integer.parseInt(enddatear[1]);
+        int searchday=0;
+        int searchlastday=0;
+        if(startmonth==1)
+        {
+            searchday=0+startday;
+
+        }
+        else if(startmonth==2)
+        {
+            searchday=31+startday;
+
+        }
+        else if(startmonth==3)
+        {
+            searchday=60+startday;
+
+        }
+        else if(startmonth==4)
+        {
+            searchday=91+startday;
+
+        }
+        else if(startmonth==5)
+        {
+            searchday=121+startday;
+
+        }
+        else if(startmonth==6)
+        {
+            searchday=152+startday;
+
+        }
+        else if(startmonth==7)
+        {
+            searchday=182+startday;
+
+        }
+        else if(startmonth==8)
+        {
+            searchday=213+startday;
+
+        }
+        else if(startmonth==9)
+        {
+            searchday=244+startday;
+
+
+        }
+        else if(startmonth==10)
+        {
+            searchday=274+startday;
+
+        }
+        else if(startmonth==11)
+        {
+            searchday=305+startday;
+
+        }
+        else if(startmonth==12)
+        {
+            searchday=335+startday;
+
         }
 
-    } // Todo YAPILACAK
+        if(endmonth==1)
+        {
+            searchlastday=0+endday;
 
+        }
+        else if(endmonth==2)
+        {
+            searchlastday=31+endday;
+
+        }
+        else if(endmonth==3)
+        {
+            searchlastday=60+endday;
+
+        }
+        else if(endmonth==4)
+        {
+            searchlastday=91+endday;
+
+        }
+        else if(endmonth==5)
+        {
+            searchlastday=121+endday;
+
+        }
+        else if(endmonth==6)
+        {
+            searchlastday=152+endday;
+
+        }
+        else if(endmonth==7)
+        {
+            searchlastday=182+endday;
+
+        }
+        else if(endmonth==8)
+        {
+            searchlastday=213+endday;
+
+        }
+        else if(endmonth==9)
+        {
+            searchlastday=244+endday;
+
+
+        }
+        else if(endmonth==10)
+        {
+            searchlastday=274+endday;
+
+        }
+        else if(endmonth==11)
+        {
+            searchlastday=305+endday;
+
+        }
+        else if(endmonth==12)
+        {
+            searchlastday=335+endday;
+
+        }
+
+
+
+        for (int i=0;i<rezervations.length;i++)
+        {
+            boolean flag=true;
+            if (rezervations[i]!=null) {
+                String[] rezstart = rezervations[i].startDate.split("\\.");
+                int rezstartday=Integer.parseInt(rezstart[0]);
+                int rezstartmonth=Integer.parseInt(rezstart[1]);
+
+
+                String[] rezend = rezervations[i].endDate.split("\\.");
+                int rezendday=Integer.parseInt(rezend[0]);
+                int rezendmonth=Integer.parseInt(rezend[1]);
+                int rezdaysayac=0;
+                int lastdaysayac=0;
+
+
+                if(rezstartmonth==1)
+                {
+                    rezdaysayac=0+rezstartday;
+
+                }
+                else if(rezstartmonth==2)
+                {
+                    rezdaysayac=31+rezstartday;
+
+                }
+                else if(rezstartmonth==3)
+                {
+                    rezdaysayac=60+rezstartday;
+
+                }
+                else if(rezstartmonth==4)
+                {
+                    rezdaysayac=91+rezstartday;
+
+                }
+                else if(rezstartmonth==5)
+                {
+                    rezdaysayac=121+rezstartday;
+
+                }
+                else if(rezstartmonth==6)
+                {
+                    rezdaysayac=152+rezstartday;
+
+                }
+                else if(rezstartmonth==7)
+                {
+                    rezdaysayac=182+rezstartday;
+
+                }
+                else if(rezstartmonth==8)
+                {
+                    rezdaysayac=213+rezstartday;
+
+                }
+                else if(rezstartmonth==9)
+                {
+                    rezdaysayac=244+rezstartday;
+
+
+                }
+                else if(rezstartmonth==10)
+                {
+                    rezdaysayac=274+rezstartday;
+
+                }
+                else if(rezstartmonth==11)
+                {
+                    rezdaysayac=305+rezstartday;
+
+                }
+                else if(rezstartmonth==12)
+                {
+                    rezdaysayac=335+rezstartday;
+
+                }
+
+                if(rezendmonth==1)
+                {
+                    lastdaysayac=0+rezendday;
+
+                }else if(rezendmonth==2)
+                {
+                    lastdaysayac=31+rezendday;
+
+                }
+                else if(rezendmonth==3)
+                {
+                    lastdaysayac=60+rezendday;
+
+                }
+                else if(rezendmonth==4)
+                {
+                    lastdaysayac=91+rezendday;
+
+                }
+                else if(rezendmonth==5)
+                {
+                    lastdaysayac=121+rezendday;
+
+                }
+                else if(rezendmonth==6)
+                {
+                    lastdaysayac=152+rezendday;
+
+                }
+                else if(rezendmonth==7)
+                {
+                    lastdaysayac=182+rezendday;
+
+                }
+                else if(rezendmonth==8)
+                {
+                    lastdaysayac=213+rezendday;
+
+                }
+                else if(rezendmonth==9)
+                {
+                    lastdaysayac=244+rezendday;
+
+
+                }
+                else if(rezendmonth==10)
+                {
+                    lastdaysayac=274+rezendday;
+
+                }
+                else if(rezendmonth==11)
+                {
+                    lastdaysayac=305+rezendday;
+
+                }
+                else if(rezendmonth==12)
+                {
+                    lastdaysayac=335+rezendday;
+
+                }
+                if((searchday<=rezdaysayac&&(searchlastday<=lastdaysayac&&searchlastday>=rezdaysayac))||(searchday>=rezdaysayac&&searchlastday<=lastdaysayac)||(searchday>=rezdaysayac&&searchday<=lastdaysayac)&&(searchlastday>=lastdaysayac)||(searchday<=rezdaysayac)&&(searchlastday>=lastdaysayac))
+                {
+                    doluroom[doluroomindex]=rezervations[i].roomid;
+                    doluroomindex++;
+                }
+
+            }
+
+        }
+
+        for(int v=0;v<doluroom.length;v++)
+        {/*
+            if(doluroom[v]!=0)
+            {
+                System.out.println(doluroom[v]);
+            }*/
+        }
+
+        for(int i=0;i<rooms.length;i++)
+        {
+            if (rooms[i]!=null) {
+
+                boolean roomflag = true;
+                for (int j = 0; j < doluroom.length; j++)
+                {
+                    if (rooms[i].roomId == doluroom[j]) {
+                        roomflag = false;
+                    }
+
+                }
+                String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
+                String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
+                if (roomflag == true) {
+                    System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId, rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
+
+                }
+            }
+
+
+        }
+
+
+
+    }
 
 
 }
