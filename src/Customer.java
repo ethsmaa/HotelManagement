@@ -8,18 +8,20 @@ public class Customer {
     String district;
     String city;
     String customerPhone;
+    Date birthdate;
 
     public Customer(String name, String surname, String gender,
-                    String birthdate, String adress, String district,
-                    String city, String phone) {
+                    String birthdateString, String adress, String district,
+                    String city, String phone, Date date) {
         customerName = name;
         customerSurname = surname;
         customerGender = gender;
-        customerBirthdate = birthdate;
+        customerBirthdate = birthdateString;
         customerAdress = adress;
         this.district = district;
         this.city = city;
         customerPhone = phone;
+        birthdate = date;
 
 
     }

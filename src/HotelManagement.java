@@ -32,11 +32,11 @@ public class HotelManagement {
                             Boolean airCondition = Boolean.parseBoolean(commandList[3]);
                             Boolean balcony = Boolean.parseBoolean(commandList[4]);
                             float price = Float.parseFloat(commandList[5]);
-
                             Room room = new Room(type, airCondition, balcony, price); //new element in the room class with these attributes
                             addRoom(room); // add this room to the hotel
                         }
                         break;
+
                     case ("addEmployee"): {
                         String name = commandList[1];
                         String surname = commandList[2];
@@ -63,8 +63,12 @@ public class HotelManagement {
                         String district = commandList[6];
                         String city = commandList[7];
                         String phone = commandList[8];
-
-                        Customer customer = new Customer(name, surname, gender, birthdate, addresstext, district, city, phone);
+                        String birthdates[] = commandList[4].split("\\.");
+                        int day = Integer.parseInt(birthdates[0]);
+                        int month = Integer.parseInt(birthdates[1]);
+                        int year = Integer.parseInt(birthdates[2]);
+                        Date date = new Date(day,month,year);
+                        Customer customer = new Customer(name, surname, gender, birthdate, addresstext, district, city, phone,date);
                         addCustomer(customer);
 
                         break;
@@ -81,11 +85,23 @@ public class HotelManagement {
                     case "addReservation": {
                         int customerid = Integer.parseInt(commandList[1]);
                         int roomid = Integer.parseInt(commandList[2]);
+                        String startDates[] = commandList[3].split("\\.");
+                        int dayStart = Integer.parseInt(startDates[0]);
+                        int monthStart = Integer.parseInt(startDates[1]);
+                        int yearStart = Integer.parseInt(startDates[2]);
+                        Date startDate = new Date(dayStart,monthStart,yearStart);
 
-                        String startdate = commandList[3];
-                        String enddate = commandList[4];
+                        String endDates[] = commandList[4].split("\\.");
+                        int dayEnd = Integer.parseInt(endDates[0]);
+                        int monthEnd = Integer.parseInt(endDates[1]);
+                        int yearEnd = Integer.parseInt(endDates[2]);
+                        Date endDate = new Date(dayEnd,monthEnd,yearEnd);
 
-                        Reservation rezervation = new Reservation(customerid, roomid, startdate, enddate);
+
+                        String startdateString = commandList[3];
+                        String enddateString = commandList[4];
+
+                        Reservation rezervation = new Reservation(customerid, roomid, startdateString, enddateString,startDate,endDate);
                         addRezervation(rezervation);
                         break;
                     }
@@ -111,8 +127,22 @@ public class HotelManagement {
 
                         break;
                     case "statistics":
-
                         break;
+                    case "hesapla":
+                        String startDates[] = commandList[1].split("\\.");
+                        int dayStart = Integer.parseInt(startDates[0]);
+                        int monthStart = Integer.parseInt(startDates[1]);
+                        int yearStart = Integer.parseInt(startDates[2]);
+                        Date startDate = new Date(dayStart,monthStart,yearStart);
+
+                        String endDates[] = commandList[2].split("\\.");
+                        int dayEnd = Integer.parseInt(endDates[0]);
+                        int monthEnd = Integer.parseInt(endDates[1]);
+                        int yearEnd = Integer.parseInt(endDates[2]);
+                        Date endDate = new Date(dayEnd,monthEnd,yearEnd);
+
+                        calistir(startDate,endDate);
+
                 }
 
 
@@ -427,12 +457,12 @@ public class HotelManagement {
         {
             boolean flag=true;
             if (rezervations[i]!=null) {
-                String[] rezstart = rezervations[i].startDate.split("\\.");
+                String[] rezstart = rezervations[i].startDateString.split("\\.");
                 int rezstartday=Integer.parseInt(rezstart[0]);
                 int rezstartmonth=Integer.parseInt(rezstart[1]);
 
 
-                String[] rezend = rezervations[i].endDate.split("\\.");
+                String[] rezend = rezervations[i].endDateString.split("\\.");
                 int rezendday=Integer.parseInt(rezend[0]);
                 int rezendmonth=Integer.parseInt(rezend[1]);
                 int rezdaysayac=0;
@@ -606,5 +636,31 @@ public class HotelManagement {
 
     }
 
+     int aydakigun(Date date)
+    {
+        int day;
+        int month = date.month;
+        int gunsayisi = date.day;
+
+
+        for(int i = 1 ; i<month; i++) {
+            if((i<8 && i%2!=0) || i>=8 && i%2 ==0) // 1, 3, 5, 7, 8, 10, 12
+            {
+                day = 31;
+            }
+            else if(i == 2)
+                day = 29;
+            else
+                day = 30; // 4, 6, 11
+            gunsayisi+=day;
+        }
+        return gunsayisi;
+    }
+    void  calistir(Date firstDate, Date secondDate) {
+        int dayBetween = aydakigun(secondDate) - aydakigun(firstDate);
+        System.out.println(dayBetween);
+
+
+    }
 
 }
