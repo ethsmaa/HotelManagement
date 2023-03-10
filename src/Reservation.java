@@ -5,6 +5,7 @@ public class Reservation {
     String endDateString;
     Date startDate;
     Date endDate;
+    int reservationTime;
 
     public Reservation(int customerid, int roomid , String startDateString, String endDateString,Date startDate, Date endDate){
         this.customerid = customerid;

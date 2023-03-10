@@ -17,11 +17,14 @@ public class HotelManagement {
     Reservation[] reservations = new Reservation[30];
     int[] reservedRoomIds = new int[30];
 
+    int[] reservationDays = new int[30];
+
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
     int rezervationIndex = 0;
     int reservedRoomIndex = 0;
+    int reservationDayIndex = 0;
 
 
     void init() {
@@ -163,6 +166,10 @@ public class HotelManagement {
 
                         break;
                     case "statistics":
+                        mostReservedRoomandCustomer();
+                        break;
+                    case "bul":
+                        mostReservedRoomandCustomer();
                         break;
                 }
 
@@ -257,11 +264,15 @@ public class HotelManagement {
     // rezervation
     void addRezervation(Reservation reservation) {
 
+        reservation.reservationTime = calculateDaysBetweenDates(reservation.startDate,reservation.endDate);
         reservations[rezervationIndex] = reservation;
         rezervationIndex++;
 
         reservedRoomIds[reservedRoomIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
         reservedRoomIndex++;
+
+        reservationDays[reservationDayIndex] = reservation.reservationTime;
+
 
 
     }
@@ -353,9 +364,9 @@ public class HotelManagement {
         return daycount;
     } // girilen tarihin yılın kaçıncı günü olduğunu hesaplar
 
-    void calculateDaysBetweenDates(Date firstDate, Date secondDate) {
+    int calculateDaysBetweenDates(Date firstDate, Date secondDate) {
         int dayBetween = calculateDays(secondDate) - calculateDays(firstDate);
-        System.out.println(dayBetween);
+        return dayBetween;
     } //!! Bunu istatistik için kullanacağız
 
     boolean isBetweenDates(Reservation reservation, Date startDate, Date endDate) {
@@ -413,10 +424,37 @@ public class HotelManagement {
         }
     }
 //most reserved room
-void mostReservedRoom(){ // en fazla süre kalınan oda
+void mostReservedRoomandCustomer(){ // en fazla süre kalınan oda ve kalan müşteri 
+
+        int max = reservationDays[0];
+        for(int i = 1; i<reservationDays.length; i++) {
+            if(reservationDays[i]>max)
+                max = reservationDays[i];
+        }
+
+        for(int i = 0; i<reservations.length; i++) {
+            if(reservations[i]!=null) {
+                if(reservations[i].reservationTime == max)
+                    System.out.println("1. The most reserved room is = Room #" + reservations[i].roomid);
+            }
+        }
+
+    for(int i = 0; i<reservations.length; i++) {
+        if(reservations[i]!=null) {
+            if(reservations[i].reservationTime == max)
+            {
+                int customerIndex = findCustomerIndexById(reservations[i].customerid);
+                System.out.println(String.format("2. The best customer = %s %s",customers[customerIndex].customerName,
+                        customers[customerIndex].customerSurname)) ;
+            }
+        }
+    }
+
+
 
 
 }
+
 
 
 
