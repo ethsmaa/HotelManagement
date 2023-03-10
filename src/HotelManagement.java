@@ -293,7 +293,7 @@ public class HotelManagement {
 
     int findCustomerIndexById(int id) {
         for (int i = 0; i < customers.length; i++) {
-            if(customers[i]!=null) {
+            if (customers[i] != null) {
                 if (customers[i].customerid == id)
                     return i;
             }
@@ -358,7 +358,7 @@ public class HotelManagement {
         System.out.println(dayBetween);
     } //!! Bunu istatistik için kullanacağız
 
-    boolean IsBetweenDates(Reservation reservation, Date startDate, Date endDate) {
+    boolean isBetweenDates(Reservation reservation, Date startDate, Date endDate) {
 
         // bu fonksiyon eğer ki girilen tarihler arasında oda rezerve edilmediyse true döndürür.
         boolean dayCheck = false;
@@ -377,12 +377,13 @@ public class HotelManagement {
 
 
     }
+
     void searchRoom(Date startDate, Date endDate) {
 
         for (int i = 0; i < rezervations.length; i++) {
 
             if (rezervations[i] != null) { //ortada bir rezervasyon var ama tarih kontrolü için üstteki fonksiyona yollamalıyız
-                if (IsBetweenDates(rezervations[i], startDate, endDate) == true) { // tarih kontrolünden geçtiyse
+                if (isBetweenDates(rezervations[i], startDate, endDate) == true) { // tarih kontrolünden geçtiyse
                     Room room = findRoomById(rezervations[i].roomid); // bu odayı bul
 
                     String balconyText = room.balcony ? "balcony" : "non-balcony";
@@ -413,5 +414,7 @@ public class HotelManagement {
     }
 
 }
+//most reserved room
+
 
 
