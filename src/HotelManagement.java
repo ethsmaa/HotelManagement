@@ -167,6 +167,7 @@ public class HotelManagement {
                         break;
                     case "statistics":
                         mostReservedRoomandCustomer();
+                        calculateProfit();
                         break;
 
                 }
@@ -262,7 +263,7 @@ public class HotelManagement {
     // rezervation
     void addRezervation(Reservation reservation) {
 
-        reservation.reservationTime = calculateDaysBetweenDates(reservation.startDate,reservation.endDate);
+        reservation.reservationTime = calculateDaysBetweenDates(reservation.startDate, reservation.endDate);
         reservations[rezervationIndex] = reservation;
         rezervationIndex++;
 
@@ -270,9 +271,9 @@ public class HotelManagement {
         reservedRoomIndex++;
 
         reservationDays[reservationDayIndex] = reservation.reservationTime;
+        findRoomById(reservation.roomid).reservationTime = reservation.reservationTime;
 
-
-
+        findRoomById(reservation.roomid).hasReserved = true; // oda rezerve edildi.
     }
 
     void listRezervation() {
@@ -292,9 +293,8 @@ public class HotelManagement {
     // search functions
     Room findRoomById(int id) {
         for (int i = 0; i < rooms.length; i++) {
-            if (reservations[i] != null) {
-                if (rooms[i].roomId == id)
-                    return rooms[i];
+            if (rooms[i].roomId == id) {
+                return rooms[i];
             }
         }
         return null;
@@ -406,78 +406,125 @@ public class HotelManagement {
                 break;
         }
 
-        // eğer rezervasyon yoksa dolu oda id'lerinin arasında odayı ara. yoksa bastır.
-        boolean flag = true;
-        for (int i = 0; i < rooms.length; i++) {
-
-            if (rooms[i] != null) {
-                for(int j = 0; j<reservedRoomIds.length; j++) {
-                    if(reservedRoomIds[j]!= 0) {
-                        if (rooms[i].roomId == reservedRoomIds[j]) {
-                            flag = false;
-                            break;
-                        }
-                        else
-                            flag = true;
-                    }
-                    if(!flag)
-                        break;
-                }
-
-            if(flag){
+        for(int i = 0 ; i<rooms.length; i++) {
+            if(rooms[i] != null ) {
+            if(rooms[i].hasReserved != true) {
                 String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
                 String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
                 System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
                         rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
             }
+
             }
 
 
+        /*
+        // eğer rezervasyon yoksa dolu oda id'lerinin arasında odayı ara. yoksa bastır.
+        boolean flag = true;
+        for (int i = 0; i < rooms.length; i++) {
+
+            if (rooms[i] != null) {
+                for (int j = 0; j < reservedRoomIds.length; j++) {
+                    if (reservedRoomIds[j] != 0) {
+                        if (rooms[i].roomId == reservedRoomIds[j]) {
+                            flag = false;
+                            break;
+                        } else
+                            flag = true;
+                    }
+                    if (!flag)
+                        break;
+                }
+
+                if (flag) {
+                    String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
+                    String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
+                    System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
+                            rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
+                }
+            }
+
+*/
         }
 
 
     }
-//most reserved room
-void mostReservedRoomandCustomer() { // en fazla süre kalınan oda ve kalan müşteri
 
-    int max = reservationDays[0];
-    for (int i = 1; i < reservationDays.length; i++) {
-        if (reservationDays[i] > max)
-            max = reservationDays[i];
-    }
+    //most reserved room
+    void mostReservedRoomandCustomer() { // en fazla süre kalınan oda ve kalan müşteri
 
-    for (int i = 0; i < reservations.length; i++) {
-        if (reservations[i] != null) {
-            if (reservations[i].reservationTime == max)
-                System.out.println("1. The most reserved room is = Room #" + reservations[i].roomid);
+        int max = reservationDays[0];
+        for (int i = 1; i < reservationDays.length; i++) {
+            if (reservationDays[i] > max)
+                max = reservationDays[i];
         }
-    }
 
-
-    for (int i = 0; i < reservations.length; i++) {
-        if (reservations[i] != null) {
-            if (reservations[i].reservationTime == max) {
-                int customerIndex = findCustomerIndexById(reservations[i].customerid);
-                System.out.println(String.format("2. The best customer = %s %s", customers[customerIndex].customerName,
-                        customers[customerIndex].customerSurname));
+        for (int i = 0; i < reservations.length; i++) {
+            if (reservations[i] != null) {
+                if (reservations[i].reservationTime == max)
+                    System.out.println("1. The most reserved room is = Room #" + reservations[i].roomid);
             }
         }
+
+
+        for (int i = 0; i < reservations.length; i++) {
+            if (reservations[i] != null) {
+                if (reservations[i].reservationTime == max) {
+                    int customerIndex = findCustomerIndexById(reservations[i].customerid);
+                    System.out.println(String.format("2. The best customer = %s %s", customers[customerIndex].customerName,
+                            customers[customerIndex].customerSurname));
+                }
+            }
+        }
+
+
     }
 
 
-}
+    float roomIncome() {
+        float incomeSum = 0;
+        float incomeOfRoom;
+        System.out.print("3. Income = ");
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i] != null) {
+                incomeOfRoom = rooms[i].reservationTime * rooms[i].price;
+                incomeSum += incomeOfRoom;
+                System.out.print(String.format("%.0fTL",incomeOfRoom));
+                if (rooms[i + 1] == null)
+                    System.out.print(" = ");
+                else
+                    System.out.print(" + ");
+            }
+        }
+        System.out.println(String.format("%.0fTL",incomeSum));
+        return incomeSum;
+    }
 
+    float salary() {
+        int salarySum = 0;
 
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null) {
+                int salary = employees[i].salary;
+                salarySum += 12 * salary;
+            }
 
+        }
+        System.out.println("   Salary = " + salarySum + "TL");
+        return salarySum;
 
+    }
 
+    void calculateProfit () {
+        float income = roomIncome();
+        float salary = salary();
+        System.out.println("   Constant Expenses = 120000TL");
+        float constantExpenses = 12 * 10000;
+        float profitResult = income - salary -constantExpenses;
+        System.out.println(String.format("   Profit = %.0fTL - %.0fTL - %.0fTL = %.0fTL ",
+                income,salary,constantExpenses,profitResult));
 
-
-
-
-
-
-
+    }
 
 
 }
