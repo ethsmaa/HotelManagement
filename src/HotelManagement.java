@@ -407,24 +407,24 @@ public class HotelManagement {
         }
 
         // eğer rezervasyon yoksa dolu oda id'lerinin arasında odayı ara. yoksa bastır.
-        boolean arrayicinde = true;
+        boolean flag = true;
         for (int i = 0; i < rooms.length; i++) {
 
             if (rooms[i] != null) {
                 for(int j = 0; j<reservedRoomIds.length; j++) {
                     if(reservedRoomIds[j]!= 0) {
                         if (rooms[i].roomId == reservedRoomIds[j]) {
-                            arrayicinde = false;
+                            flag = false;
                             break;
                         }
                         else
-                            arrayicinde = true;
+                            flag = true;
                     }
-                    if(!arrayicinde)
+                    if(!flag)
                         break;
                 }
-                
-            if(arrayicinde){
+
+            if(flag){
                 String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
                 String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
                 System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
