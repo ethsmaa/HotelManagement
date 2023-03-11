@@ -17,6 +17,7 @@ public class HotelManagement {
     Reservation[] reservations = new Reservation[30];
     int[] reservedRoomIds = new int[30];
 
+    int[] howManyCustomers = new int[365];
     int[] reservationDays = new int[30];
 
     int roomIndex = 0;
@@ -25,6 +26,7 @@ public class HotelManagement {
     int rezervationIndex = 0;
     int reservedRoomIndex = 0;
     int reservationDayIndex = 0;
+    int yilingunuIndex =0;
 
 
     void init() {
@@ -170,6 +172,22 @@ public class HotelManagement {
                         calculateProfit();
                         break;
 
+                    case "simulation":
+                        String startDates[] = commandList[1].split("\\.");
+                        int dayStart = Integer.parseInt(startDates[0]);
+                        int monthStart = Integer.parseInt(startDates[1]);
+                        int yearStart = Integer.parseInt(startDates[2]);
+                        Date startDate = new Date(dayStart, monthStart, yearStart);
+
+                        String endDates[] = commandList[2].split("\\.");
+                        int dayEnd = Integer.parseInt(endDates[0]);
+                        int monthEnd = Integer.parseInt(endDates[1]);
+                        int yearEnd = Integer.parseInt(endDates[2]);
+                        Date endDate = new Date(dayEnd, monthEnd, yearEnd);
+
+                        deneme(startDate, endDate);
+                        break;
+
                 }
 
 
@@ -274,6 +292,12 @@ public class HotelManagement {
         findRoomById(reservation.roomid).reservationTime = reservation.reservationTime;
 
         findRoomById(reservation.roomid).hasReserved = true; // oda rezerve edildi.
+
+        for(int i = calculateDays(reservation.startDate) ; i<calculateDays(reservation.endDate); i++) {
+            howManyCustomers[i]++;
+        }
+
+
     }
 
     void listRezervation() {
@@ -365,7 +389,7 @@ public class HotelManagement {
     int calculateDaysBetweenDates(Date firstDate, Date secondDate) {
         int dayBetween = calculateDays(secondDate) - calculateDays(firstDate);
         return dayBetween;
-    } //!! Bunu istatistik için kullanacağız
+    }   // iki tarih arasında kaç gün var
 
     boolean isBetweenDates(Reservation reservation, Date startDate, Date endDate) {
 
@@ -406,17 +430,16 @@ public class HotelManagement {
                 break;
         }
 
-        for(int i = 0 ; i<rooms.length; i++) {
-            if(rooms[i] != null ) {
-            if(rooms[i].hasReserved != true) {
-                String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
-                String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
-                System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
-                        rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
-            }
+        for (int i = 0; i < rooms.length; i++) { // oda boşsa odayı bastır
+            if (rooms[i] != null) {
+                if (rooms[i].hasReserved != true) {
+                    String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
+                    String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
+                    System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
+                            rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
+                }
 
             }
-
 
         /*
         // eğer rezervasyon yoksa dolu oda id'lerinin arasında odayı ara. yoksa bastır.
@@ -480,7 +503,6 @@ public class HotelManagement {
 
     }
 
-
     float roomIncome() {
         float incomeSum = 0;
         float incomeOfRoom;
@@ -489,14 +511,14 @@ public class HotelManagement {
             if (rooms[i] != null) {
                 incomeOfRoom = rooms[i].reservationTime * rooms[i].price;
                 incomeSum += incomeOfRoom;
-                System.out.print(String.format("%.0fTL",incomeOfRoom));
+                System.out.print(String.format("%.0fTL", incomeOfRoom));
                 if (rooms[i + 1] == null)
                     System.out.print(" = ");
                 else
                     System.out.print(" + ");
             }
         }
-        System.out.println(String.format("%.0fTL",incomeSum));
+        System.out.println(String.format("%.0fTL", incomeSum));
         return incomeSum;
     }
 
@@ -515,14 +537,62 @@ public class HotelManagement {
 
     }
 
-    void calculateProfit () {
+    void calculateProfit() {
         float income = roomIncome();
         float salary = salary();
         System.out.println("   Constant Expenses = 120000TL");
         float constantExpenses = 12 * 10000;
-        float profitResult = income - salary -constantExpenses;
+        float profitResult = income - salary - constantExpenses;
         System.out.println(String.format("   Profit = %.0fTL - %.0fTL - %.0fTL = %.0fTL ",
-                income,salary,constantExpenses,profitResult));
+                income, salary, constantExpenses, profitResult));
+
+    }
+
+    int hangiAyKacCeker(int i) {
+        if ((i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0) // 1, 3, 5, 7, 8, 10, 12
+        {
+            return 31;
+        } else if (i == 2)
+            return 29;
+        else
+            return 30; // 4, 6, 11
+    }
+
+    void deneme(Date startDate, Date endDate) {
+        int firstMonth = startDate.month;
+        int secondMonth = endDate.month;
+
+        if(firstMonth!=secondMonth) {
+            for (int i = startDate.day; i <= hangiAyKacCeker(i); i++) {
+                System.out.print(i + "      ");
+
+            }
+        }
+        else if (firstMonth == secondMonth) {
+            for (int i = startDate.day; i <= endDate.day; i++) {
+                System.out.print(i + "      ");
+
+            }
+        }
+
+        for (int i = firstMonth + 1; i < secondMonth; i++) {
+            for (int j = 1; j <= hangiAyKacCeker(i); j++) {
+                System.out.print(j + "      ");
+            }
+        }
+
+        if(firstMonth!=secondMonth) {
+            for (int i = 1; i <= endDate.day; i++) {
+                System.out.print(i + "      ");
+            }
+        }
+
+
+        System.out.println();
+
+        for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
+            System.out.print(howManyCustomers[i] + "       " );
+        }
 
     }
 
