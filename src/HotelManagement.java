@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -13,16 +12,14 @@ public class HotelManagement {
     Employee[] employees = new Employee[50];
     Customer[] customers = new Customer[30];
     Reservation[] reservations = new Reservation[30];
-    int[] reservedRoomIds = new int[30];
     int[] howManyCustomers = new int[365];
-    int[] reservationDays = new int[30];
+    // int[] reservedRoomIds = new int[30]; // rezerve edilen odaların id'leri -- alternatif yol buldum su an kullanım dışı
 
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
     int rezervationIndex = 0;
     int reservedRoomIndex = 0;
-    int reservationDayIndex = 0;
 
     void init() {
         try {
@@ -197,7 +194,6 @@ public class HotelManagement {
 
 
     }
-
     // rooms
     void addRoom(Room room) {
         if (roomIndex >= 30) return;
@@ -280,10 +276,9 @@ public class HotelManagement {
         reservations[rezervationIndex] = reservation;
         rezervationIndex++;
 
-        reservedRoomIds[reservedRoomIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
-        reservedRoomIndex++;
+       // reservedRoomIds[reservedRoomIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
+       // reservedRoomIndex++;
 
-        reservationDays[reservationDayIndex] = reservation.reservationTime;
         findRoomById(reservation.roomid).reservationTime = reservation.reservationTime;
 
         findRoomById(reservation.roomid).hasReserved = true; // oda rezerve edildi.
@@ -329,7 +324,7 @@ public class HotelManagement {
         return 0;
     }
 
-    void findCustomerbyName(String name) {
+    void findCustomerbyName(String name) { //searchCustomer
         for (int i = 0; i < customers.length; i++) {
             if (name.contains("*")) {  // yıldızlı işlemler
                 int targetIndex = name.indexOf('*');
@@ -413,7 +408,6 @@ public class HotelManagement {
             if (reservations[i] != null) { //ortada bir rezervasyon var ama tarih kontrolü için üstteki fonksiyona yollamalıyız
                 if (isBetweenDates(reservations[i], startDate, endDate) == true) { // tarih kontrolünden geçtiyse
                     Room room = findRoomById(reservations[i].roomid); // bu odayı bul
-
                     String balconyText = room.balcony ? "balcony" : "non-balcony";
                     String airconditionText = room.airCondition ? "aircondition" : "no-aircondition";
                     System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", room.roomId,
@@ -471,30 +465,35 @@ public class HotelManagement {
     //most reserved room
     void mostReservedRoomandCustomer() { // en fazla süre kalınan oda ve kalan müşteri
 
-        int max = reservationDays[0];
-        for (int i = 1; i < reservationDays.length; i++) {
-            if (reservationDays[i] > max)
-                max = reservationDays[i];
+        System.out.print("1. The most reserved room is = ");
+        int max = reservations[0].reservationTime;
+        for(int i = 0; i<reservations.length;i++) {
+            if(reservations[i]!=null) {
+                if(reservations[i].reservationTime>max)
+                    max = reservations[i].reservationTime;
+            }
         }
 
         for (int i = 0; i < reservations.length; i++) {
             if (reservations[i] != null) {
                 if (reservations[i].reservationTime == max)
-                    System.out.println("1. The most reserved room is = Room #" + reservations[i].roomid);
+                    System.out.print("Room #" +reservations[i].roomid + "    "); // there can be more than one
             }
         }
+        System.out.println();
 
 
+        System.out.print("2. The best customer =");
         for (int i = 0; i < reservations.length; i++) {
             if (reservations[i] != null) {
                 if (reservations[i].reservationTime == max) {
                     int customerIndex = findCustomerIndexById(reservations[i].customerid);
-                    System.out.println(String.format("2. The best customer = %s %s", customers[customerIndex].customerName,
+                    System.out.print(String.format("  %s %s    ", customers[customerIndex].customerName,
                             customers[customerIndex].customerSurname));
                 }
             }
         }
-
+        System.out.println();
 
     }
 
@@ -561,7 +560,6 @@ public class HotelManagement {
         if (satisfaction>100)
             satisfaction=100;
         return  (int) satisfaction;
-
     }
 
     void deneme(Date startDate, Date endDate) {
@@ -620,7 +618,6 @@ public class HotelManagement {
             sumSatisfaction += satisfaction(howManyCustomers[i]);
         }
         return  sumSatisfaction / (howManyDays);
-
     }
 
 
