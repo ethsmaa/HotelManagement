@@ -10,10 +10,11 @@ addCustomer;Zeynep;Ak;female;15.6.1980;Ata Cad. No:2;Urla;Izmir;+902321112233
 addCustomer;Cem;Kara;male;5.12.2000;150. Sokak No:7 D:3;Taksim;Istanbul;+902125556677
 addCustomer;Zerrin;Dal;female;12.7.1995;Demir Cad. No:3;Mamak;Ankara;+903123332211
 
-
 addReservation;3;1;25.4.2024;30.4.2024
+
 addReservation;1;2;20.4.2024;30.4.2024
-addReservation;2;3;28.4.2024;5.5.2024
+addReservation;2;3;10.4.2024;10.9.2024
 addCustomer;Hakan;Yazar;male;20.8.1968;Bulut Cad. No:1;Alsancak;Izmir;+902321234321
-addReservation;4;4;10.4.2024;10.9.2024
-statistics
+
+
+searchRoom;25.4.2024;30.4.2024
