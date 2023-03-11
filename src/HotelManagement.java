@@ -558,43 +558,67 @@ public class HotelManagement {
             return 30; // 4, 6, 11
     }
 
+    int satisfaction(int customerNumber) {
+        float satisfaction = (300 / customerNumber);
+        if (satisfaction>100)
+            satisfaction=100;
+        return  (int) satisfaction;
+
+    }
+
     void deneme(Date startDate, Date endDate) {
         int firstMonth = startDate.month;
         int secondMonth = endDate.month;
-
+        System.out.print("Day         :");
         if(firstMonth!=secondMonth) {
             for (int i = startDate.day; i <= hangiAyKacCeker(i); i++) {
-                System.out.print(i + "      ");
+                //System.out.print(i + "        ");
+                System.out.print(String.format("%10s",i));
 
             }
         }
         else if (firstMonth == secondMonth) {
             for (int i = startDate.day; i <= endDate.day; i++) {
-                System.out.print(i + "      ");
+                System.out.print(String.format("%10s",i));
 
             }
         }
 
         for (int i = firstMonth + 1; i < secondMonth; i++) {
             for (int j = 1; j <= hangiAyKacCeker(i); j++) {
-                System.out.print(j + "      ");
+                System.out.print(String.format("%10s",j));
             }
         }
 
         if(firstMonth!=secondMonth) {
             for (int i = 1; i <= endDate.day; i++) {
-                System.out.print(i + "      ");
+                System.out.print(String.format("%10s",i));
             }
         }
 
-
         System.out.println();
 
+        System.out.print("Customer    :");
+
         for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
-            System.out.print(howManyCustomers[i] + "       " );
+            System.out.print(String.format("%10s",howManyCustomers[i]));
+        }
+        System.out.println();
+
+        System.out.print("Satisfaction:");
+
+        for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
+            System.out.print(String.format("%10s",satisfaction(howManyCustomers[i])));
         }
 
+
+
+
+
+
     }
+
+
 
 
 }
