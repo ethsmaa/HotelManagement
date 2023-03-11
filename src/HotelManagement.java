@@ -4,10 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 // todo
-// address her birey için güncellenecek
-// telefon her birey için güncellenecek
-// date bulunduğu her yer için güncellenecek
-// omer canın attığı kod eklenecek
+// - otel doluluk oranı
+
 
 public class HotelManagement {
 
@@ -16,7 +14,6 @@ public class HotelManagement {
     Customer[] customers = new Customer[30];
     Reservation[] reservations = new Reservation[30];
     int[] reservedRoomIds = new int[30];
-
     int[] howManyCustomers = new int[365];
     int[] reservationDays = new int[30];
 
@@ -26,8 +23,6 @@ public class HotelManagement {
     int rezervationIndex = 0;
     int reservedRoomIndex = 0;
     int reservationDayIndex = 0;
-    int yilingunuIndex =0;
-
 
     void init() {
         try {
@@ -627,9 +622,6 @@ public class HotelManagement {
         return  sumSatisfaction / (howManyDays);
 
     }
-
-
-
 
 
 }
