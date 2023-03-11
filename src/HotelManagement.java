@@ -559,6 +559,9 @@ public class HotelManagement {
     }
 
     int satisfaction(int customerNumber) {
+        if(customerNumber == 0)
+            return 100;
+
         float satisfaction = (300 / customerNumber);
         if (satisfaction>100)
             satisfaction=100;
@@ -610,13 +613,21 @@ public class HotelManagement {
         for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
             System.out.print(String.format("%10s",satisfaction(howManyCustomers[i])));
         }
+        System.out.println();
 
+        System.out.print("Average Satisfaction = " + averageSatisfaction(startDate,endDate));
+    }
 
-
-
-
+    float averageSatisfaction(Date startDate, Date endDate) {
+        int sumSatisfaction = 0;
+        int howManyDays= calculateDaysBetweenDates(startDate,endDate) + 1;
+        for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
+            sumSatisfaction += satisfaction(howManyCustomers[i]);
+        }
+        return  sumSatisfaction / (howManyDays);
 
     }
+
 
 
 
