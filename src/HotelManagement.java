@@ -228,7 +228,7 @@ public class HotelManagement {
 
     void deleteEmployee(int id) {
         for (int i = 0; i < employees.length; i++) {
-            if (id == employees[i].employeeid) {
+            if (employees[i]!= null && id == employees[i].employeeid) {
                 employees[i] = null;
                 break;
             }
