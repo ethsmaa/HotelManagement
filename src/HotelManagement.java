@@ -543,7 +543,7 @@ public class HotelManagement {
     }
 
     int hangiAyKacCeker(int i) {
-        if ((i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0) // 1, 3, 5, 7, 8, 10, 12
+        if ((i!=2 && (i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0)) // 1, 3, 5, 7, 8, 10, 12
         {
             return 31;
         } else if (i == 2)
@@ -567,7 +567,7 @@ public class HotelManagement {
         int secondMonth = endDate.month;
         System.out.print("Day         :");
         if(firstMonth!=secondMonth) {
-            for (int i = startDate.day; i <= hangiAyKacCeker(i); i++) {
+            for (int i = startDate.day; i <= hangiAyKacCeker(firstMonth); i++) {
                 //System.out.print(i + "        ");
                 System.out.print(String.format("%10s",i));
 
