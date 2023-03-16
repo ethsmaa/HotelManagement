@@ -12,8 +12,7 @@ public class HotelManagement {
     Employee[] employees = new Employee[50];
     Customer[] customers = new Customer[30];
     Reservation[] reservations = new Reservation[30];
-    int[] howManyCustomers = new int[367]; // out of range hatasından dolayı 367
-    // int[] reservedRoomIds = new int[30]; // rezerve edilen odaların id'leri -- alternatif yol buldum su an kullanım dışı
+    int[] howManyCustomers = new int[367]; // this array represents the days of the year (size of 367 because out of range error)
 
     int roomIndex = 0;
     int employeeIndex = 0;
@@ -129,7 +128,7 @@ public class HotelManagement {
                         break;
                     }
                     case "listReservations":
-                        listRezervation();
+                        listReservation();
                         break;
                     case "searchCustomer":
                         String targetCustomer = commandList[1];
@@ -189,11 +188,7 @@ public class HotelManagement {
         } catch (
                 FileNotFoundException e) {
             System.out.println("commands.txt cannot be found");
-
-
         }
-
-
     }
 
     // rooms
@@ -207,15 +202,16 @@ public class HotelManagement {
     }
 
     void listRoom() {
+        System.out.println("listRooms");
         for (int i = 0; i < rooms.length; i++) {
             if (rooms[i] != null) {
                 String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
                 String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
-                System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
+                System.out.println(String.format("  Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
                         rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
             } else break;
         }
-
+        System.out.println();
     }
 
     // employee
@@ -246,6 +242,7 @@ public class HotelManagement {
                         employees[i].job));
             }
         }
+        System.out.println();
     }
 
     // customer
@@ -269,6 +266,8 @@ public class HotelManagement {
 
 
         }
+        System.out.println();
+
     }
 
     // rezervation
@@ -292,17 +291,19 @@ public class HotelManagement {
 
     }
 
-    void listRezervation() {
+    void listReservation() {
+        System.out.println("listReservations");
+
         for (int i = 0; i < reservations.length; i++) {
             if (reservations[i] != null) {
                 int targetCustomerIndex = findCustomerIndexById(reservations[i].customerid);
-                System.out.println(String.format("Room  #%d  %s %s  %s   %s", reservations[i].roomid, customers[targetCustomerIndex].customerName,
+                System.out.println(String.format("  Room  #%d  %s %s  %s   %s", reservations[i].roomid, customers[targetCustomerIndex].customerName,
                         customers[targetCustomerIndex].customerSurname, reservations[i].startDateString, reservations[i].endDateString));
             }
 
 
         }
-
+        System.out.println();
 
     }
 
@@ -464,8 +465,8 @@ public class HotelManagement {
 
     }
 
-    //most reserved room
-    void mostReservedRoomandCustomer() { // en fazla süre kalınan oda ve kalan müşteri
+    void mostReservedRoomandCustomer() { // room and customer staying the most
+        System.out.println("statistics");
 
         System.out.print("1. The most reserved room is = ");
         int max = reservations[0].reservationTime;
@@ -496,7 +497,6 @@ public class HotelManagement {
             }
         }
         System.out.println();
-
     }
 
     float roomIncome() {
@@ -544,7 +544,8 @@ public class HotelManagement {
 
     }
 
-    int hangiAyKacCeker(int i) {
+    int daysInMonth(int i) { // how many days is this month
+
         if ((i != 2 && (i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0)) // 1, 3, 5, 7, 8, 10, 12
         {
             return 31;
@@ -565,11 +566,14 @@ public class HotelManagement {
     }
 
     void simulation(Date startDate, Date endDate) {
+        System.out.println("simulation");
+
+
         int firstMonth = startDate.month;
         int secondMonth = endDate.month;
         System.out.print("Day         :");
         if (firstMonth != secondMonth) {
-            for (int i = startDate.day; i <= hangiAyKacCeker(firstMonth); i++) {
+            for (int i = startDate.day; i <= daysInMonth(firstMonth); i++) {
                 //System.out.print(i + "        ");
                 System.out.print(String.format("%10s", i));
 
@@ -582,7 +586,7 @@ public class HotelManagement {
         }
 
         for (int i = firstMonth + 1; i < secondMonth; i++) {
-            for (int j = 1; j <= hangiAyKacCeker(i); j++) {
+            for (int j = 1; j <= daysInMonth(i); j++) {
                 System.out.print(String.format("%10s", j));
             }
         }
@@ -610,6 +614,9 @@ public class HotelManagement {
         System.out.println();
 
         System.out.print("Average Satisfaction = " + averageSatisfaction(startDate, endDate));
+        System.out.println();
+        System.out.println();
+
     }
 
     float averageSatisfaction(Date startDate, Date endDate) {
@@ -640,6 +647,7 @@ public class HotelManagement {
     } // o ayın sonu yılın kaçıncı günü ?
 
     void occupancyRate() {
+        System.out.println("4. Monhtly occupancy rate");
         for (int month = 1; month <= 12; month++) {
             System.out.print(String.format("%10s", month));
         }
@@ -651,10 +659,12 @@ public class HotelManagement {
                 sumOfDayCount += howManyCustomers[i];
             }
 
-            int denum = (roomIndex) * hangiAyKacCeker(month);
+            int denum = (roomIndex) * daysInMonth(month);
             double result = ((double) sumOfDayCount / (double) denum) * 100;
             System.out.printf("%9.1f%%", result);
         }
+        System.out.println();
+        System.out.println();
     }
 
 
