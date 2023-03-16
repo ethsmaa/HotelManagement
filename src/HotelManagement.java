@@ -605,7 +605,7 @@ public class HotelManagement {
         System.out.print("Satisfaction:");
 
         for (int i = calculateDays(startDate); i <= calculateDays(endDate); i++) {
-            System.out.print(String.format("%10s", satisfaction(howManyCustomers[i])));
+            System.out.printf("%9d%%", satisfaction(howManyCustomers[i]));
         }
         System.out.println();
 
@@ -620,7 +620,7 @@ public class HotelManagement {
         }
         return sumSatisfaction / (howManyDays);
     }
-    
+
     int endOfTheMonthDay(int month) {
 
         int day;
@@ -653,7 +653,7 @@ public class HotelManagement {
 
             int denum = (roomIndex) * hangiAyKacCeker(month);
             double result = ((double) sumOfDayCount / (double) denum) * 100;
-            System.out.printf("%10.1f", result);
+            System.out.printf("%9.1f%%", result);
         }
     }
 
