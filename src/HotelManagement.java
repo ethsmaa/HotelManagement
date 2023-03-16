@@ -277,9 +277,6 @@ public class HotelManagement {
         reservations[rezervationIndex] = reservation;
         rezervationIndex++;
 
-        // reservedRoomIds[reservedRoomIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
-        // reservedRoomIndex++;
-
         findRoomById(reservation.roomid).reservationTime = reservation.reservationTime;
 
         findRoomById(reservation.roomid).hasReserved = true; // oda rezerve edildi.
@@ -377,16 +374,16 @@ public class HotelManagement {
             daycount += day;
         }
         return daycount;
-    } // girilen tarihin yılın kaçıncı günü olduğunu hesaplar
+    } // Calculates which day of the year the entered date is
 
     int calculateDaysBetweenDates(Date firstDate, Date secondDate) {
         int dayBetween = calculateDays(secondDate) - calculateDays(firstDate);
         return dayBetween;
-    }   // iki tarih arasında kaç gün var
+    }   // How many days are there between two dates?
 
     boolean isBetweenDates(Reservation reservation, Date startDate, Date endDate) {
+        // This function returns true if the room has not been reserved between the dates.
 
-        // bu fonksiyon eğer ki girilen tarihler arasında oda rezerve edilmediyse true döndürür.
         boolean dayCheck = false;
         int targetStartDate = calculateDays(startDate);
         int targetEndDate = calculateDays(endDate);
@@ -395,11 +392,11 @@ public class HotelManagement {
         int reservationEnd = calculateDays(reservation.endDate);
 
         if (reservationEnd < targetStartDate || reservationStart > targetEndDate) {
-            dayCheck = true; // boştur
+            dayCheck = true; // is empty
             return dayCheck;
         }
 
-        return dayCheck; //buradan donduyse oda doludur
+        return dayCheck; // room is reserved in date range
 
 
     }
@@ -408,7 +405,7 @@ public class HotelManagement {
 
         for (int i = 0; i < reservations.length; i++) {
 
-            if (reservations[i] != null) { //ortada bir rezervasyon var ama tarih kontrolü için üstteki fonksiyona yollamalıyız
+            if (reservations[i] != null) { //there is a reservation, but we have to send it to the isBetweenDates function for checking.
                 if (isBetweenDates(reservations[i], startDate, endDate) == true) { // tarih kontrolünden geçtiyse
                     Room room = findRoomById(reservations[i].roomid); // bu odayı bul
                     String balconyText = room.balcony ? "balcony" : "non-balcony";
@@ -422,7 +419,7 @@ public class HotelManagement {
                 break;
         }
 
-        for (int i = 0; i < rooms.length; i++) { // oda boşsa odayı bastır
+        for (int i = 0; i < rooms.length; i++) { // print the rooms that have never been reserved
             if (rooms[i] != null) {
                 if (rooms[i].hasReserved != true) {
                     String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
@@ -433,35 +430,7 @@ public class HotelManagement {
 
             }
 
-        /*
-        // eğer rezervasyon yoksa dolu oda id'lerinin arasında odayı ara. yoksa bastır.
-        boolean flag = true;
-        for (int i = 0; i < rooms.length; i++) {
-
-            if (rooms[i] != null) {
-                for (int j = 0; j < reservedRoomIds.length; j++) {
-                    if (reservedRoomIds[j] != 0) {
-                        if (rooms[i].roomId == reservedRoomIds[j]) {
-                            flag = false;
-                            break;
-                        } else
-                            flag = true;
-                    }
-                    if (!flag)
-                        break;
-                }
-
-                if (flag) {
-                    String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
-                    String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
-                    System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
-                            rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
-                }
-            }
-
-*/
         }
-
 
     }
 
