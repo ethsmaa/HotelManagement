@@ -12,14 +12,13 @@ public class HotelManagement {
     Employee[] employees = new Employee[50];
     Customer[] customers = new Customer[30];
     Reservation[] reservations = new Reservation[30];
-    int[] howManyCustomers = new int[365];
+    int[] howManyCustomers = new int[367]; // out of range hatasından dolayı 367
     // int[] reservedRoomIds = new int[30]; // rezerve edilen odaların id'leri -- alternatif yol buldum su an kullanım dışı
 
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
     int rezervationIndex = 0;
-    int reservedRoomIndex = 0;
 
     void init() {
         try {
@@ -108,6 +107,7 @@ public class HotelManagement {
                     case "addReservation": {
                         int customerid = Integer.parseInt(commandList[1]);
                         int roomid = Integer.parseInt(commandList[2]);
+
                         String startDates[] = commandList[3].split("\\.");
                         int dayStart = Integer.parseInt(startDates[0]);
                         int monthStart = Integer.parseInt(startDates[1]);
@@ -162,6 +162,7 @@ public class HotelManagement {
                     case "statistics":
                         mostReservedRoomandCustomer();
                         calculateProfit();
+                        occupancyRate();
                         break;
 
                     case "simulation":
@@ -177,7 +178,7 @@ public class HotelManagement {
                         int yearEnd = Integer.parseInt(endDates[2]);
                         Date endDate = new Date(dayEnd, monthEnd, yearEnd);
 
-                        deneme(startDate, endDate);
+                        simulation(startDate, endDate);
                         break;
 
                 }
@@ -194,6 +195,7 @@ public class HotelManagement {
 
 
     }
+
     // rooms
     void addRoom(Room room) {
         if (roomIndex >= 30) return;
@@ -228,7 +230,7 @@ public class HotelManagement {
 
     void deleteEmployee(int id) {
         for (int i = 0; i < employees.length; i++) {
-            if (employees[i]!= null && id == employees[i].employeeid) {
+            if (employees[i] != null && id == employees[i].employeeid) {
                 employees[i] = null;
                 break;
             }
@@ -276,14 +278,14 @@ public class HotelManagement {
         reservations[rezervationIndex] = reservation;
         rezervationIndex++;
 
-       // reservedRoomIds[reservedRoomIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
-       // reservedRoomIndex++;
+        // reservedRoomIds[reservedRoomIndex] = reservation.roomid; // rezervasyon yapılan odayı ekle
+        // reservedRoomIndex++;
 
         findRoomById(reservation.roomid).reservationTime = reservation.reservationTime;
 
         findRoomById(reservation.roomid).hasReserved = true; // oda rezerve edildi.
 
-        for(int i = calculateDays(reservation.startDate) ; i<calculateDays(reservation.endDate); i++) {
+        for (int i = calculateDays(reservation.startDate); i < calculateDays(reservation.endDate); i++) {
             howManyCustomers[i]++;
         }
 
@@ -396,7 +398,7 @@ public class HotelManagement {
             return dayCheck;
         }
 
-        return dayCheck; // oda doludur
+        return dayCheck; //buradan donduyse oda doludur
 
 
     }
@@ -467,9 +469,9 @@ public class HotelManagement {
 
         System.out.print("1. The most reserved room is = ");
         int max = reservations[0].reservationTime;
-        for(int i = 0; i<reservations.length;i++) {
-            if(reservations[i]!=null) {
-                if(reservations[i].reservationTime>max)
+        for (int i = 0; i < reservations.length; i++) {
+            if (reservations[i] != null) {
+                if (reservations[i].reservationTime > max)
                     max = reservations[i].reservationTime;
             }
         }
@@ -477,7 +479,7 @@ public class HotelManagement {
         for (int i = 0; i < reservations.length; i++) {
             if (reservations[i] != null) {
                 if (reservations[i].reservationTime == max)
-                    System.out.print("Room #" +reservations[i].roomid + "    "); // there can be more than one
+                    System.out.print("Room #" + reservations[i].roomid + "    "); // there can be more than one
             }
         }
         System.out.println();
@@ -543,7 +545,7 @@ public class HotelManagement {
     }
 
     int hangiAyKacCeker(int i) {
-        if ((i!=2 && (i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0)) // 1, 3, 5, 7, 8, 10, 12
+        if ((i != 2 && (i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0)) // 1, 3, 5, 7, 8, 10, 12
         {
             return 31;
         } else if (i == 2)
@@ -552,43 +554,42 @@ public class HotelManagement {
             return 30; // 4, 6, 11
     }
 
-    int satisfaction(int customerNumber) {
-        if(customerNumber == 0)
+    int satisfaction(int customerNumber) { // 300 / müşteri sayısı = memnuniyet
+        if (customerNumber == 0)
             return 100;
 
         float satisfaction = (300 / customerNumber);
-        if (satisfaction>100)
-            satisfaction=100;
-        return  (int) satisfaction;
+        if (satisfaction > 100)
+            satisfaction = 100;
+        return (int) satisfaction;
     }
 
-    void deneme(Date startDate, Date endDate) {
+    void simulation(Date startDate, Date endDate) {
         int firstMonth = startDate.month;
         int secondMonth = endDate.month;
         System.out.print("Day         :");
-        if(firstMonth!=secondMonth) {
+        if (firstMonth != secondMonth) {
             for (int i = startDate.day; i <= hangiAyKacCeker(firstMonth); i++) {
                 //System.out.print(i + "        ");
-                System.out.print(String.format("%10s",i));
+                System.out.print(String.format("%10s", i));
 
             }
-        }
-        else if (firstMonth == secondMonth) {
+        } else if (firstMonth == secondMonth) {
             for (int i = startDate.day; i <= endDate.day; i++) {
-                System.out.print(String.format("%10s",i));
+                System.out.print(String.format("%10s", i));
 
             }
         }
 
         for (int i = firstMonth + 1; i < secondMonth; i++) {
             for (int j = 1; j <= hangiAyKacCeker(i); j++) {
-                System.out.print(String.format("%10s",j));
+                System.out.print(String.format("%10s", j));
             }
         }
 
-        if(firstMonth!=secondMonth) {
+        if (firstMonth != secondMonth) {
             for (int i = 1; i <= endDate.day; i++) {
-                System.out.print(String.format("%10s",i));
+                System.out.print(String.format("%10s", i));
             }
         }
 
@@ -596,28 +597,64 @@ public class HotelManagement {
 
         System.out.print("Customer    :");
 
-        for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
-            System.out.print(String.format("%10s",howManyCustomers[i]));
+        for (int i = calculateDays(startDate); i <= calculateDays(endDate); i++) {
+            System.out.print(String.format("%10s", howManyCustomers[i]));
         }
         System.out.println();
 
         System.out.print("Satisfaction:");
 
-        for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
-            System.out.print(String.format("%10s",satisfaction(howManyCustomers[i])));
+        for (int i = calculateDays(startDate); i <= calculateDays(endDate); i++) {
+            System.out.print(String.format("%10s", satisfaction(howManyCustomers[i])));
         }
         System.out.println();
 
-        System.out.print("Average Satisfaction = " + averageSatisfaction(startDate,endDate));
+        System.out.print("Average Satisfaction = " + averageSatisfaction(startDate, endDate));
     }
 
     float averageSatisfaction(Date startDate, Date endDate) {
         int sumSatisfaction = 0;
-        int howManyDays= calculateDaysBetweenDates(startDate,endDate) + 1;
-        for(int i = calculateDays(startDate) ; i<= calculateDays(endDate); i++) {
+        int howManyDays = calculateDaysBetweenDates(startDate, endDate) + 1;
+        for (int i = calculateDays(startDate); i <= calculateDays(endDate); i++) {
             sumSatisfaction += satisfaction(howManyCustomers[i]);
         }
-        return  sumSatisfaction / (howManyDays);
+        return sumSatisfaction / (howManyDays);
+    }
+    
+    int endOfTheMonthDay(int month) {
+
+        int day;
+        int daycount = 0;
+        for (int i = 1; i <= month; i++) {
+            if ((i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0) // 1, 3, 5, 7, 8, 10, 12
+            {
+                day = 31;
+            } else if (i == 2)
+                day = 29;
+            else
+                day = 30; // 4, 6, 11
+            daycount += day;
+        }
+        return daycount;
+
+    } // o ayın sonu yılın kaçıncı günü ?
+
+    void occupancyRate() {
+        for (int month = 1; month <= 12; month++) {
+            System.out.print(String.format("%10s", month));
+        }
+        System.out.println();
+
+        for (int month = 1; month <= 12; month++) {
+            int sumOfDayCount = 0;
+            for (int i = endOfTheMonthDay(month - 1); i <= endOfTheMonthDay(month); i++) {
+                sumOfDayCount += howManyCustomers[i];
+            }
+
+            int denum = (roomIndex) * hangiAyKacCeker(month);
+            double result = ((double) sumOfDayCount / (double) denum) * 100;
+            System.out.printf("%10.1f", result);
+        }
     }
 
 
