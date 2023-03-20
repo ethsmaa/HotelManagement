@@ -2,8 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-// todo
-// - otel doluluk oranı
+
 
 
 public class HotelManagement {
@@ -13,12 +12,16 @@ public class HotelManagement {
     Customer[] customers = new Customer[30];
     Reservation[] reservations = new Reservation[30];
     int[] howManyCustomers = new int[367]; // this array represents the days of the year (size of 367 because out of range error)
+    int[][] reservationTable = new int[30][366];
 
+    int housekeeperCount = 0;
     int roomIndex = 0;
     int employeeIndex = 0;
     int customerIndex = 0;
     int rezervationIndex = 0;
 
+
+    // read file
     void init() {
         try {
             File commandFile = new File("commands.txt"); // open file
@@ -132,7 +135,7 @@ public class HotelManagement {
                         break;
                     case "searchCustomer":
                         String targetCustomer = commandList[1];
-                        findCustomerbyName(targetCustomer);
+                        searchCustomer(targetCustomer);
 
                         break;
                     case "searchRoom": {
@@ -149,6 +152,7 @@ public class HotelManagement {
                         Date endDate = new Date(dayEnd, monthEnd, yearEnd);
 
                         searchRoom(startDate, endDate);
+                        allReservationInRange(startDate, endDate);
 
                         break;
                     }
@@ -199,6 +203,7 @@ public class HotelManagement {
         rooms[roomIndex] = room;
         roomIndex++;
 
+        reservationTable[room.roomId][0] = room.roomId;
     }
 
     void listRoom() {
@@ -207,7 +212,7 @@ public class HotelManagement {
             if (rooms[i] != null) {
                 String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
                 String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
-                System.out.println(String.format("  Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
+                System.out.println(String.format("  Room #%d   %s  %s  %s  %.0fTL", rooms[i].roomId,
                         rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
             } else break;
         }
@@ -221,6 +226,9 @@ public class HotelManagement {
             employees[employeeIndex] = employee;
             employeeIndex++;
 
+            if (employee.job.equals("housekeeper")) {
+                housekeeperCount++;
+            }
         }
     }
 
@@ -272,17 +280,22 @@ public class HotelManagement {
 
     // rezervation
     void addRezervation(Reservation reservation) {
-
         reservation.reservationTime = calculateDaysBetweenDates(reservation.startDate, reservation.endDate);
         reservations[rezervationIndex] = reservation;
         rezervationIndex++;
 
         findRoomById(reservation.roomid).reservationTime = reservation.reservationTime;
 
-        findRoomById(reservation.roomid).hasReserved = true; // oda rezerve edildi.
+        findRoomById(reservation.roomid).hasReserved = true; // oda rezerve edildi. // kullanılmıyor su an
 
-        for (int i = calculateDays(reservation.startDate); i < calculateDays(reservation.endDate); i++) {
+        int start = calculateDays(reservation.startDate);
+        int end = calculateDays(reservation.endDate);
+
+        for (int i = start; i < end; i++) {
             howManyCustomers[i]++;
+        }
+        for (int i = start; i < end; i++) {
+            reservationTable[reservation.roomid][i] = reservation.customerid;
         }
 
 
@@ -307,7 +320,7 @@ public class HotelManagement {
     // search functions
     Room findRoomById(int id) {
         for (int i = 0; i < rooms.length; i++) {
-            if (rooms[i].roomId == id) {
+            if (rooms[i] != null && rooms[i].roomId == id) {
                 return rooms[i];
             }
         }
@@ -324,39 +337,134 @@ public class HotelManagement {
         return 0;
     }
 
-    void findCustomerbyName(String name) { //searchCustomer
-        for (int i = 0; i < customers.length; i++) {
-            if (name.contains("*")) {  // yıldızlı işlemler
-                int targetIndex = name.indexOf('*');
-                if (customers[i] != null && customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
-                    System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
-                            customers[i].customerid, customers[i].customerName,
-                            customers[i].customerSurname, customers[i].customerGender,
-                            customers[i].customerBirthdate, customers[i].address.city, customers[i].customerPhone.countryCode,
-                            customers[i].customerPhone.cityCode, customers[i].customerPhone.number));
+    int findReservationIndexByRoomId(int id) {
+        for (int i = 0; i < reservations.length; i++) {
+            if (reservations[i] != null) {
+                if (reservations[i].roomid == id)
+                    return i;
+            }
+        }
+        return 0;
+    }
+
+    void searchCustomer(String name) { //searchCustomer
+        System.out.println("searchCustomer: " + name);
+        if (name.contains("*") && !name.contains("?")) {
+            int starCount = 0;
+            for (int i = 0; i < name.length(); i++) {
+                if (name.charAt(i) == '*') {
+                    starCount++;
                 }
-            } else if (name.contains("?")) {
-                if (customers[i] != null) {
-                    if (customers[i].customerName.length() == name.length()) {
-                        int targetIndex = name.indexOf('?');
-                        //
-                        if (customers[i].customerName.substring(0, targetIndex).equals(name.substring(0, targetIndex))) {
-                            System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
-                                    customers[i].customerid, customers[i].customerName,
-                                    customers[i].customerSurname, customers[i].customerGender,
-                                    customers[i].customerBirthdate, customers[i].address.city, customers[i].customerPhone.countryCode,
-                                    customers[i].customerPhone.cityCode, customers[i].customerPhone.number));
+            }
+
+            if (starCount == 1) {
+                for (int i = 0; i < customers.length; i++) {
+                    boolean flag = true;
+                    for (int j = 0; j < name.length(); j++) {
+                        if (customers[i] != null && name.charAt(j) != '*' && customers[i].customerName.charAt(j) != name.charAt(j)) {
+                            flag = false;
+                            break;
                         }
                     }
 
+                    if (customers[i] != null && flag) {
+                        System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
+                                customers[i].customerid, customers[i].customerName,
+                                customers[i].customerSurname, customers[i].customerGender,
+                                customers[i].customerBirthdate, customers[i].address.city, customers[i].customerPhone.countryCode,
+                                customers[i].customerPhone.cityCode, customers[i].customerPhone.number));
+                    }
                 }
+            } else {
+                System.out.println("There can only be one '*' character used for search");
+            }
+        } else if (name.contains("?") && !name.contains("*")) {
+            for (int i = 0; i < customers.length; i++) {
+                boolean flag = true;
+
+                if (customers[i] != null && name.length() == customers[i].customerName.length()) {
+                    for (int j = 0; j < name.length(); j++) {
+                        if (customers[i] != null && name.charAt(j) != '?' && customers[i].customerName.charAt(j) != name.charAt(j)) {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (customers[i] != null && flag) {
+                        System.out.println(String.format("   Customer  #%d  %s  %s  %s  %s  %s  %s (%s) %s",
+                                customers[i].customerid, customers[i].customerName,
+                                customers[i].customerSurname, customers[i].customerGender,
+                                customers[i].customerBirthdate, customers[i].address.city, customers[i].customerPhone.countryCode,
+                                customers[i].customerPhone.cityCode, customers[i].customerPhone.number));
+                    }
+                }
+            }
+            System.out.println();
+        } else {
+            System.out.println("Your formatting was deemed invalid. Make sure to use either '*' or '?'.");
+            System.out.println();
+        }
 
 
+    }
+
+    void searchRoom(Date startDate, Date endDate) {
+        System.out.println(String.format("searchRoom %d.%d.%d - %d.%d.%d", startDate.day, startDate.month, startDate.year, endDate.day,
+                endDate.month, endDate.year));
+        int start = calculateDays(startDate);
+        int end = calculateDays(endDate);
+        for (int i = 0; i < 30; i++) {
+            boolean flag = true;
+            for (int j = start; j <= end; j++) {
+                if (reservationTable[i][j] != 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag == true && reservationTable[i][0] != 0) {
+                Room room = findRoomById(i);
+                String balconyText = room.balcony ? "balcony" : "non-balcony";
+                String airconditionText = room.airCondition ? "aircondition" : "no-aircondition";
+                System.out.println(String.format("  Room #%d   %s  %s  %s  %.0fTL", room.roomId,
+                        room.roomType, airconditionText, balconyText, room.price));
+            }
+        }
+
+        System.out.println();
+
+    }
+
+    void allReservationInRange(Date startDate, Date endDate) {
+        System.out.println(String.format("All reservations between %d.%d.%d - %d.%d.%d", startDate.day, startDate.month, startDate.year, endDate.day,
+                endDate.month, endDate.year));
+        int start = calculateDays(startDate);
+        int end = calculateDays(endDate);
+
+
+        for (int i = 0; i < 30; i++) {
+            boolean flag = false;
+            for (int j = start; j <= end; j++) {
+                if (reservationTable[i][j] != 0) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) {
+                if (reservations[i] != null) {
+                    int index = findReservationIndexByRoomId(i);
+                    int targetCustomerIndex = findCustomerIndexById(reservations[index].customerid);
+                    System.out.println(String.format("  Room  #%d  %s %s  %s   %s", reservations[index].roomid, customers[targetCustomerIndex].customerName,
+                            customers[targetCustomerIndex].customerSurname, reservations[index].startDateString, reservations[index].endDateString));
+                }
             }
 
         }
-    } // SearchCustomer
+        System.out.println();
 
+    }
+
+
+    // date functions / procedures
     int calculateDays(Date date) {
         int day;
         int month = date.month;
@@ -379,61 +487,38 @@ public class HotelManagement {
     int calculateDaysBetweenDates(Date firstDate, Date secondDate) {
         int dayBetween = calculateDays(secondDate) - calculateDays(firstDate);
         return dayBetween;
-    }   // How many days are there between two dates?
-
-    boolean isBetweenDates(Reservation reservation, Date startDate, Date endDate) {
-        // This function returns true if the room has not been reserved between the dates.
-
-        boolean dayCheck = false;
-        int targetStartDate = calculateDays(startDate);
-        int targetEndDate = calculateDays(endDate);
-
-        int reservationStart = calculateDays(reservation.startDate);
-        int reservationEnd = calculateDays(reservation.endDate);
-
-        if (reservationEnd < targetStartDate || reservationStart > targetEndDate) {
-            dayCheck = true; // is empty
-            return dayCheck;
-        }
-
-        return dayCheck; // room is reserved in date range
-
-
     }
 
-    void searchRoom(Date startDate, Date endDate) {
+    int endOfTheMonthDay(int month) {
 
-        for (int i = 0; i < reservations.length; i++) {
-
-            if (reservations[i] != null) { //there is a reservation, but we have to send it to the isBetweenDates function for checking.
-                if (isBetweenDates(reservations[i], startDate, endDate) == true) { // tarih kontrolünden geçtiyse
-                    Room room = findRoomById(reservations[i].roomid); // bu odayı bul
-                    String balconyText = room.balcony ? "balcony" : "non-balcony";
-                    String airconditionText = room.airCondition ? "aircondition" : "no-aircondition";
-                    System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", room.roomId,
-                            room.roomType, airconditionText, balconyText, room.price));
-
-                }
-
-            } else
-                break;
+        int day;
+        int daycount = 0;
+        for (int i = 1; i <= month; i++) {
+            if ((i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0) // 1, 3, 5, 7, 8, 10, 12
+            {
+                day = 31;
+            } else if (i == 2)
+                day = 29;
+            else
+                day = 30; // 4, 6, 11
+            daycount += day;
         }
+        return daycount;
 
-        for (int i = 0; i < rooms.length; i++) { // print the rooms that have never been reserved
-            if (rooms[i] != null) {
-                if (rooms[i].hasReserved != true) {
-                    String balconyText = rooms[i].balcony ? "balcony" : "non-balcony";
-                    String airconditionText = rooms[i].airCondition ? "aircondition" : "no-aircondition";
-                    System.out.println(String.format("Room #%d %s  %s  %s  %.0fTL", rooms[i].roomId,
-                            rooms[i].roomType, airconditionText, balconyText, rooms[i].price));
-                }
+    } // what day of the year is the end of that month?
 
-            }
+    int daysInMonth(int i) { // how many days is this month
 
-        }
+        if ((i != 2 && (i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0)) // 1, 3, 5, 7, 8, 10, 12
+        {
+            return 31;
+        } else if (i == 2)
+            return 29;
+        else
+            return 30; // 4, 6, 11
+    } // how many days are there in that month
 
-    }
-
+    // statistic functions / procedures
     void mostReservedRoomandCustomer() { // room and customer staying the most
         System.out.println("statistics");
 
@@ -513,27 +598,28 @@ public class HotelManagement {
 
     }
 
-    int daysInMonth(int i) { // how many days is this month
+    void occupancyRate() {
+        System.out.println("4. Monhtly occupancy rate");
+        for (int month = 1; month <= 12; month++) {
+            System.out.print(String.format("%10s", month));
+        }
+        System.out.println();
 
-        if ((i != 2 && (i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0)) // 1, 3, 5, 7, 8, 10, 12
-        {
-            return 31;
-        } else if (i == 2)
-            return 29;
-        else
-            return 30; // 4, 6, 11
+        for (int month = 1; month <= 12; month++) {
+            int sumOfDayCount = 0;
+            for (int i = endOfTheMonthDay(month - 1); i <= endOfTheMonthDay(month); i++) {
+                sumOfDayCount += howManyCustomers[i];
+            }
+
+            int denum = (roomIndex) * daysInMonth(month);
+            double result = ((double) sumOfDayCount / (double) denum) * 100;
+            System.out.printf("%9.1f%%", result);
+        }
+        System.out.println();
+        System.out.println();
     }
 
-    int satisfaction(int customerNumber) { // 300 / müşteri sayısı = memnuniyet
-        if (customerNumber == 0)
-            return 100;
-
-        float satisfaction = (300 / customerNumber);
-        if (satisfaction > 100)
-            satisfaction = 100;
-        return (int) satisfaction;
-    }
-
+    // simulation functions / procedures
     void simulation(Date startDate, Date endDate) {
         System.out.println("simulation");
 
@@ -573,6 +659,7 @@ public class HotelManagement {
         for (int i = calculateDays(startDate); i <= calculateDays(endDate); i++) {
             System.out.print(String.format("%10s", howManyCustomers[i]));
         }
+
         System.out.println();
 
         System.out.print("Satisfaction:");
@@ -588,6 +675,16 @@ public class HotelManagement {
 
     }
 
+    int satisfaction(int customerNumber) { // (300 / müşteri sayısı) * housekeeper sayısı = memnuniyet
+        if (customerNumber == 0)
+            return 100;
+
+        float satisfaction = ((300 / customerNumber) * housekeeperCount);
+        if (satisfaction > 100)
+            satisfaction = 100;
+        return (int) satisfaction;
+    }
+
     float averageSatisfaction(Date startDate, Date endDate) {
         int sumSatisfaction = 0;
         int howManyDays = calculateDaysBetweenDates(startDate, endDate) + 1;
@@ -595,45 +692,6 @@ public class HotelManagement {
             sumSatisfaction += satisfaction(howManyCustomers[i]);
         }
         return sumSatisfaction / (howManyDays);
-    }
-
-    int endOfTheMonthDay(int month) {
-
-        int day;
-        int daycount = 0;
-        for (int i = 1; i <= month; i++) {
-            if ((i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0) // 1, 3, 5, 7, 8, 10, 12
-            {
-                day = 31;
-            } else if (i == 2)
-                day = 29;
-            else
-                day = 30; // 4, 6, 11
-            daycount += day;
-        }
-        return daycount;
-
-    } // o ayın sonu yılın kaçıncı günü ?
-
-    void occupancyRate() {
-        System.out.println("4. Monhtly occupancy rate");
-        for (int month = 1; month <= 12; month++) {
-            System.out.print(String.format("%10s", month));
-        }
-        System.out.println();
-
-        for (int month = 1; month <= 12; month++) {
-            int sumOfDayCount = 0;
-            for (int i = endOfTheMonthDay(month - 1); i <= endOfTheMonthDay(month); i++) {
-                sumOfDayCount += howManyCustomers[i];
-            }
-
-            int denum = (roomIndex) * daysInMonth(month);
-            double result = ((double) sumOfDayCount / (double) denum) * 100;
-            System.out.printf("%9.1f%%", result);
-        }
-        System.out.println();
-        System.out.println();
     }
 
 
