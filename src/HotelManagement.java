@@ -12,7 +12,7 @@ public class HotelManagement {
     Customer[] customers = new Customer[30];
     Reservation[] reservations = new Reservation[30];
     int[] howManyCustomers = new int[367]; // this array represents the days of the year (size of 367 because out of range error)
-    int[][] reservationTable = new int[30][366];
+    int[][] reservationTable = new int[31][366];
 
     int housekeeperCount = 0;
     int roomIndex = 0;
@@ -183,7 +183,7 @@ public class HotelManagement {
 
                         simulation(startDate, endDate);
                         break;
-
+                        
                 }
 
 
@@ -203,7 +203,8 @@ public class HotelManagement {
         rooms[roomIndex] = room;
         roomIndex++;
 
-        reservationTable[room.roomId][0] = room.roomId;
+        if(room.roomId<=reservationTable.length)
+             reservationTable[room.roomId][0] = room.roomId;
     }
 
     void listRoom() {
@@ -326,7 +327,6 @@ public class HotelManagement {
         }
         return null;
     }
-
     int findCustomerIndexById(int id) {
         for (int i = 0; i < customers.length; i++) {
             if (customers[i] != null) {
@@ -336,7 +336,6 @@ public class HotelManagement {
         }
         return 0;
     }
-
     int findReservationIndexByRoomId(int id) {
         for (int i = 0; i < reservations.length; i++) {
             if (reservations[i] != null) {
@@ -346,7 +345,6 @@ public class HotelManagement {
         }
         return 0;
     }
-
     void searchCustomer(String name) { //searchCustomer
         System.out.println("searchCustomer: " + name);
         if (name.contains("*") && !name.contains("?")) {
@@ -407,7 +405,6 @@ public class HotelManagement {
 
 
     }
-
     void searchRoom(Date startDate, Date endDate) {
         System.out.println(String.format("searchRoom %d.%d.%d - %d.%d.%d", startDate.day, startDate.month, startDate.year, endDate.day,
                 endDate.month, endDate.year));
@@ -433,7 +430,6 @@ public class HotelManagement {
         System.out.println();
 
     }
-
     void allReservationInRange(Date startDate, Date endDate) {
         System.out.println(String.format("All reservations between %d.%d.%d - %d.%d.%d", startDate.day, startDate.month, startDate.year, endDate.day,
                 endDate.month, endDate.year));
@@ -462,8 +458,6 @@ public class HotelManagement {
         System.out.println();
 
     }
-
-
     // date functions / procedures
     int calculateDays(Date date) {
         int day;
@@ -483,12 +477,10 @@ public class HotelManagement {
         }
         return daycount;
     } // Calculates which day of the year the entered date is
-
     int calculateDaysBetweenDates(Date firstDate, Date secondDate) {
         int dayBetween = calculateDays(secondDate) - calculateDays(firstDate);
         return dayBetween;
     }
-
     int endOfTheMonthDay(int month) {
 
         int day;
@@ -506,7 +498,6 @@ public class HotelManagement {
         return daycount;
 
     } // what day of the year is the end of that month?
-
     int daysInMonth(int i) { // how many days is this month
 
         if ((i != 2 && (i < 8 && i % 2 != 0) || i >= 8 && i % 2 == 0)) // 1, 3, 5, 7, 8, 10, 12
@@ -517,7 +508,6 @@ public class HotelManagement {
         else
             return 30; // 4, 6, 11
     } // how many days are there in that month
-
     // statistic functions / procedures
     void mostReservedRoomandCustomer() { // room and customer staying the most
         System.out.println("statistics");
@@ -552,7 +542,6 @@ public class HotelManagement {
         }
         System.out.println();
     }
-
     float roomIncome() {
         float incomeSum = 0;
         float incomeOfRoom;
@@ -571,7 +560,6 @@ public class HotelManagement {
         System.out.println(String.format("%.0fTL", incomeSum));
         return incomeSum;
     }
-
     float salary() {
         int salarySum = 0;
 
@@ -586,7 +574,6 @@ public class HotelManagement {
         return salarySum;
 
     }
-
     void calculateProfit() {
         float income = roomIncome();
         float salary = salary();
@@ -597,7 +584,6 @@ public class HotelManagement {
                 income, salary, constantExpenses, profitResult));
 
     }
-
     void occupancyRate() {
         System.out.println("4. Monhtly occupancy rate");
         for (int month = 1; month <= 12; month++) {
@@ -618,7 +604,6 @@ public class HotelManagement {
         System.out.println();
         System.out.println();
     }
-
     // simulation functions / procedures
     void simulation(Date startDate, Date endDate) {
         System.out.println("simulation");
@@ -674,7 +659,6 @@ public class HotelManagement {
         System.out.println();
 
     }
-
     int satisfaction(int customerNumber) { // (300 / müşteri sayısı) * housekeeper sayısı = memnuniyet
         if (customerNumber == 0)
             return 100;
@@ -684,7 +668,6 @@ public class HotelManagement {
             satisfaction = 100;
         return (int) satisfaction;
     }
-
     float averageSatisfaction(Date startDate, Date endDate) {
         int sumSatisfaction = 0;
         int howManyDays = calculateDaysBetweenDates(startDate, endDate) + 1;
