@@ -618,19 +618,22 @@ public class HotelManagement {
                 System.out.print(String.format("%10s", i));
 
             }
-        } else if (firstMonth == secondMonth) {
+        }
+        else if (firstMonth == secondMonth) {
             for (int i = startDate.day; i <= endDate.day; i++) {
                 System.out.print(String.format("%10s", i));
 
             }
         }
 
+        // for the months in between
         for (int i = firstMonth + 1; i < secondMonth; i++) {
             for (int j = 1; j <= daysInMonth(i); j++) {
                 System.out.print(String.format("%10s", j));
             }
         }
 
+        // for the last month
         if (firstMonth != secondMonth) {
             for (int i = 1; i <= endDate.day; i++) {
                 System.out.print(String.format("%10s", i));
